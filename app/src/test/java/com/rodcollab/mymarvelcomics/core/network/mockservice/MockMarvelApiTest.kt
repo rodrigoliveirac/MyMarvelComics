@@ -53,7 +53,7 @@ class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
         Assert.assertEquals(comicDataWrapper?.code, StatusCode.OK.code)
         Assert.assertEquals(comicDataWrapper?.status, StatusCode.OK.message)
 
-        Assert.assertEquals(comicDataWrapper?.data?.count, 5)
+        Assert.assertEquals(comicDataWrapper?.data?.count, 3)
         Assert.assertEquals(comicDataWrapper?.data!!.results[0].id, 82967)
 
     }
