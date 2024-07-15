@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -18,6 +20,13 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        android.buildFeatures.buildConfig = true
+        val keystoreFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(keystoreFile.inputStream())
+        buildConfigField("String", "PUBLIC_API_KEY", properties.getProperty("PUBLIC_API_KEY"))
+        buildConfigField("String", "PRIVATE_API_KEY", properties.getProperty("PRIVATE_API_KEY"))
     }
 
     buildTypes {
@@ -51,6 +60,7 @@ android {
 
 dependencies {
 
+    testImplementation(libs.roboeletric)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -61,11 +71,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    testImplementation(libs.test.core.ktx)
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.okhttp.mockwebserver)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.gson)
+
 }

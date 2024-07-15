@@ -1,0 +1,358 @@
+{
+  "code": 200,
+  "data": {
+    "offset": 0,
+    "limit": 5,
+    "total": 60851,
+    "count": 5,
+    "results": [
+      {
+        "id": 82967,
+        "title": "Marvel Previews (2017)",
+        "variantDescription": "",
+        "description": "",
+        "pageCount": 112,
+        "textObjects": [],
+        "resourceURI": "http://gateway.marvel.com/v1/public/comics/82967",
+        "urls": [
+          {
+            "type": "detail",
+            "url": "http://marvel.com/comics/issue/82967/marvel_previews_2017?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          }
+        ],
+        "variants": [
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82965",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82970",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82969",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/74697",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/72736",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/75668",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65364",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65158",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65028",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/75662",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/74320",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/73776",
+            "name": "Marvel Previews (2017)"
+          }
+        ],
+        "collections": [],
+        "thumbnail": {
+          "path": "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
+          "extension": "jpg"
+        },
+        "images": [],
+        "characters": {
+          "available": 0,
+          "collectionURI": "http://gateway.marvel.com/v1/public/comics/82967/characters",
+          "items": [],
+          "returned": 0
+        }
+      },
+      {
+        "id": 82965,
+        "title": "Marvel Previews (2017)",
+        "variantDescription": "",
+        "description": "",
+        "pageCount": 152,
+        "textObjects": [],
+        "resourceURI": "http://gateway.marvel.com/v1/public/comics/82965",
+        "urls": [
+          {
+            "type": "detail",
+            "url": "http://marvel.com/comics/issue/82965/marvel_previews_2017?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          }
+        ],
+        "variants": [
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82967",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82970",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82969",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/74697",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/72736",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/75668",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65364",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65158",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65028",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/75662",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/74320",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/73776",
+            "name": "Marvel Previews (2017)"
+          }
+        ],
+        "collections": [],
+        "thumbnail": {
+          "path": "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
+          "extension": "jpg"
+        },
+        "images": [],
+        "characters": {
+          "available": 0,
+          "collectionURI": "http://gateway.marvel.com/v1/public/comics/82965/characters",
+          "items": [],
+          "returned": 0
+        }
+      },
+      {
+        "id": 82970,
+        "title": "Marvel Previews (2017)",
+        "variantDescription": "",
+        "description": "",
+        "pageCount": 112,
+        "textObjects": [],
+        "resourceURI": "http://gateway.marvel.com/v1/public/comics/82970",
+        "urls": [
+          {
+            "type": "detail",
+            "url": "http://marvel.com/comics/issue/82970/marvel_previews_2017?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          },
+          {
+            "type": "purchase",
+            "url": "http://comicstore.marvel.com/Marvel-Previews-0/digital-comic/52952?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          },
+          {
+            "type": "reader",
+            "url": "http://marvel.com/digitalcomics/view.htm?iid=52952&utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          },
+          {
+            "type": "inAppLink",
+            "url": "https://applink.marvel.com/issue/52952?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          }
+        ],
+        "variants": [
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82967",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82965",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/82969",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/74697",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/72736",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/75668",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65364",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65158",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/65028",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/75662",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/74320",
+            "name": "Marvel Previews (2017)"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/73776",
+            "name": "Marvel Previews (2017)"
+          }
+        ],
+        "collections": [],
+        "thumbnail": {
+          "path": "http://i.annihil.us/u/prod/marvel/i/mg/c/80/5e3d7536c8ada",
+          "extension": "jpg"
+        },
+        "images": [
+          {
+            "path": "http://i.annihil.us/u/prod/marvel/i/mg/c/80/5e3d7536c8ada",
+            "extension": "jpg"
+          }
+        ],
+        "characters": {
+          "available": 0,
+          "collectionURI": "http://gateway.marvel.com/v1/public/comics/82970/characters",
+          "items": [],
+          "returned": 0
+        }
+      },
+      {
+        "id": 15808,
+        "title": "Ultimate Spider-Man (2000) #110 (Mark Bagley Variant)",
+        "variantDescription": "Mark Bagley Variant",
+        "description": "#N/A",
+        "pageCount": 0,
+        "textObjects": [
+          {
+            "type": "issue_solicit_text",
+            "language": "en-us",
+            "text": "\"ULTIMATE KNIGHTS\"\r<br>The mind-stunning climax to the \"Ultimate Knights\" arc! The traitor revealed! The fate of the Kingpin of Crime! Daredevil's deep secret exposed! And Spidey's in the issue, too, we think. Don't miss a conclusion that will rock your world!\r<br>32 PGS./Rated A ...$2.99 \r<br>"
+          }
+        ],
+        "resourceURI": "http://gateway.marvel.com/v1/public/comics/15808",
+        "urls": [
+          {
+            "type": "detail",
+            "url": "http://marvel.com/comics/issue/15808/ultimate_spider-man_2000_110_mark_bagley_variant/mark_bagley_variant?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          },
+          {
+            "type": "purchase",
+            "url": "http://comicstore.marvel.com/Ultimate-Spider-Man-110/digital-comic/8701?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          },
+          {
+            "type": "reader",
+            "url": "http://marvel.com/digitalcomics/view.htm?iid=8701&utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          },
+          {
+            "type": "inAppLink",
+            "url": "https://applink.marvel.com/issue/8701?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          }
+        ],
+        "variants": [
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/15809",
+            "name": "Ultimate Spider-Man (2000) #110"
+          },
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/21901",
+            "name": "Ultimate Spider-Man (2000) #110 (Zombie Variant)"
+          }
+        ],
+        "collections": [
+          {
+            "resourceURI": "http://gateway.marvel.com/v1/public/comics/16621",
+            "name": "ULTIMATE SPIDER-MAN VOL. 18: ULTIMATE KNIGHTS TPB (Trade Paperback)"
+          }
+        ],
+        "thumbnail": {
+          "path": "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/4bc4947ea8f4d",
+          "extension": "jpg"
+        },
+        "images": [
+          {
+            "path": "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/4bc4947ea8f4d",
+            "extension": "jpg"
+          }
+        ],
+        "characters": {
+          "available": 1,
+          "collectionURI": "http://gateway.marvel.com/v1/public/comics/15808/characters",
+          "items": [
+            {
+              "resourceURI": "http://gateway.marvel.com/v1/public/characters/1011010",
+              "name": "Spider-Man (Ultimate)"
+            }
+          ],
+          "returned": 1
+        }
+      },
+      {
+        "id": 15094,
+        "title": "Silver Surfer (1987)",
+        "variantDescription": "",
+        "description": null,
+        "pageCount": 0,
+        "textObjects": [],
+        "resourceURI": "http://gateway.marvel.com/v1/public/comics/15094",
+        "urls": [
+          {
+            "type": "detail",
+            "url": "http://marvel.com/comics/issue/15094/silver_surfer_1987?utm_campaign=apiRef&utm_source=5ba5bf454f0e4236003cfe9ef8ff8ada"
+          }
+        ],
+        "variants": [],
+        "collections": [],
+        "thumbnail": {
+          "path": "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
+          "extension": "jpg"
+        },
+        "images": [],
+        "characters": {
+          "available": 0,
+          "collectionURI": "http://gateway.marvel.com/v1/public/comics/15094/characters",
+          "items": [],
+          "returned": 0
+        }
+      }
+    ]
+  },
+  "status": "Ok"
+}
