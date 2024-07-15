@@ -17,7 +17,7 @@ import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 
 @RunWith(RobolectricTestRunner::class)
-class MockMarvelApi : WebServiceAbstraction<DummyService>() {
+class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
 
     private lateinit var marvelService: DummyService
     private lateinit var context: Context
@@ -29,7 +29,7 @@ class MockMarvelApi : WebServiceAbstraction<DummyService>() {
 
     @Throws(IOException::class)
     @Test
-    fun `When ComicDataWrapper comes successfully`() = runTest {
+    fun `When ComicDataWrapper comes successful`() = runTest {
 
         val client = getOkHttpClient(
             interceptor =
@@ -61,7 +61,7 @@ class MockMarvelApi : WebServiceAbstraction<DummyService>() {
 
     @Throws(IOException::class)
     @Test
-    fun `When Interceptor got unauthorized response got error`() = runTest {
+    fun `When Interceptor received an unauthorized response`() = runTest {
 
         val client = getOkHttpClient(
             interceptor =

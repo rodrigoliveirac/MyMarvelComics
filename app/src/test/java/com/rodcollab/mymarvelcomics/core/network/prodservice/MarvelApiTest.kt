@@ -55,7 +55,7 @@ class MarvelApiTest  {
 
 
     @Test
-    fun `When the communication with the service is successfully`() = runTest {
+    fun `When the communication with the service is successful`() = runTest {
 
         val timestamp = System.currentTimeMillis().toString()
 
@@ -79,7 +79,7 @@ class MarvelApiTest  {
     }
 
     @Test
-    fun `When the communication with the service got fail`() = runTest {
+    fun `When the communication with the service fails`() = runTest {
         val timestamp = System.currentTimeMillis().toString()
 
         val apiKey = WRONG_KEY
