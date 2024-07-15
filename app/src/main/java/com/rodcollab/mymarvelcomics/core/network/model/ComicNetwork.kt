@@ -8,12 +8,8 @@ data class ComicNetwork(
     val images: List<Image>,
     val pageCount: Int,
     val resourceURI: String,
-    val textObjects: List<TextObject>,
     val thumbnail: Thumbnail,
     val title: String,
-    val urls: List<Url>,
-    val variantDescription: String,
-    val variants: List<Variant>
 ) {
     val urlImage = "${thumbnail.path}.${thumbnail.extension}"
     val urlImages = images.map { img -> "${img.path}.${img.extension}" }
