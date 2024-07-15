@@ -1,6 +1,5 @@
 package com.rodcollab.mymarvelcomics.core.network.model
-
-data class CharacterSummary(
+class ContentSummary(
     val resourceURI: String,
-    val name: String,
+    val name: String
 )

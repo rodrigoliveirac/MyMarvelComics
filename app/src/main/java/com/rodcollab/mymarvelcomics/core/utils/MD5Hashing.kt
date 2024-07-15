@@ -1,4 +1,4 @@
-package com.rodcollab.mymarvelcomics.core
+package com.rodcollab.mymarvelcomics.core.utils
 
 import java.math.BigInteger
 import java.security.MessageDigest
