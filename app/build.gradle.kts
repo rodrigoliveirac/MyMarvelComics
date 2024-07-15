@@ -3,6 +3,8 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.daggerHiltPlugin)
 }
 
 android {
@@ -85,5 +87,16 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.gson)
+
+    implementation(libs.dagger.hilt)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    implementation(libs.room.runtime)
+    implementation(libs.room.paging)
+
+    implementation(libs.paging.runtime)
+    implementation(libs.paging.compose)
 
 }

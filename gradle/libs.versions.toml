@@ -18,6 +18,11 @@ mockwebserver = "3.12.0"
 testCore = "1.6.1"
 coreKtxVersion = "1.6.1"
 roboeletric = "4.12"
+ksp = "1.9.10-1.0.13"
+hiltCompiler = "2.49"
+room = "2.6.1"
+pagingRuntime = "3.3.0"
+pagingCompose = "1.0.0-alpha18"
 
 [libraries]
 roboeletric = { group = "org.robolectric", name = "robolectric", version.ref = "roboeletric"}
@@ -48,8 +53,20 @@ okhttp-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercept
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver"}
 test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 
+dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltCompiler"}
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltCompiler"}
+
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room"}
+
+paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "pagingRuntime"}
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+devtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+daggerHiltPlugin = { id = "com.google.dagger.hilt.android", version.ref = "hiltCompiler" }
 
