@@ -3,7 +3,7 @@ package com.rodcollab.mymarvelcomics.core.network.prodservice
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.rodcollab.mymarvelcomics.BuildConfig
-import com.rodcollab.mymarvelcomics.core.md5
+import com.rodcollab.mymarvelcomics.core.utils.md5
 import com.rodcollab.mymarvelcomics.core.network.interceptors.AuthInterceptor
 import com.rodcollab.mymarvelcomics.core.network.interceptors.UserAgentInterceptor
 import com.rodcollab.mymarvelcomics.core.network.model.ComicDataWrapper
