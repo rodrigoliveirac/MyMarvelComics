@@ -1,7 +1,7 @@
 package com.rodcollab.mymarvelcomics.core.network.model
 
-data class ComicDataWrapper(
+data class ResponseContainer<T>(
     val code: Int,
-    val data: ComicData,
+    val data: ResponseData<T>,
     val status: String
 )

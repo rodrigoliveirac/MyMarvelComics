@@ -21,7 +21,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = MyMarvelComicsApp::class)
-class LocalDbTest {
+class FavoriteComicsLocalDbTest {
 
     private lateinit var database: AppDatabase
     private lateinit var favoriteComicsDao: FavoriteComicsDao
