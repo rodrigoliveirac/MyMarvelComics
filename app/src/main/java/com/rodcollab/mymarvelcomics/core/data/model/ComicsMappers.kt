@@ -10,11 +10,12 @@ fun ComicNetwork.toComic() =
         title = title,
         description = description,
         pageCount = pageCount,
-        thumbnail = urlImage,
+        thumbnail = thumbnail,
         characters = characters,
         collections = collections,
         resourceURI = resourceURI,
-        images = urlImages
+        images = images,
+        isFavorite = false
     )
 
 fun FavoriteComicEntity.toComic() =
@@ -27,7 +28,8 @@ fun FavoriteComicEntity.toComic() =
         characters = characters,
         collections = collections,
         resourceURI = resourceURI,
-        images = images
+        images = images,
+        isFavorite = false
     )
 
 fun Comic.toEntity() =

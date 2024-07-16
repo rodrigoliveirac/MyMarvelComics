@@ -8,15 +8,17 @@ import androidx.room.TypeConverters
 import com.rodcollab.mymarvelcomics.core.database.converters.CharacterListTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ContentSummaryTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ListContentSummaryTypeConverter
-import com.rodcollab.mymarvelcomics.core.database.converters.ListStringTypeConverter
+import com.rodcollab.mymarvelcomics.core.database.converters.ListImageTypeConverter
+import com.rodcollab.mymarvelcomics.core.database.converters.ThumbnailTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.dao.FavoriteComicsDao
 import com.rodcollab.mymarvelcomics.core.database.model.FavoriteComicEntity
 
 @TypeConverters(
     CharacterListTypeConverter::class,
     ListContentSummaryTypeConverter::class,
-    ListStringTypeConverter::class,
-    ContentSummaryTypeConverter::class
+    ListImageTypeConverter::class,
+    ContentSummaryTypeConverter::class,
+    ThumbnailTypeConverter::class
 )
 @Database(entities = [FavoriteComicEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
