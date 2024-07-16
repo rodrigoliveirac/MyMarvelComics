@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.rodcollab.mymarvelcomics.core.database.converters.CharacterListTypeConverter
+import com.rodcollab.mymarvelcomics.core.database.converters.ResourceListTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ContentSummaryTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ListContentSummaryTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ListImageTypeConverter
@@ -14,7 +14,7 @@ import com.rodcollab.mymarvelcomics.core.database.dao.FavoriteComicsDao
 import com.rodcollab.mymarvelcomics.core.database.model.FavoriteComicEntity
 
 @TypeConverters(
-    CharacterListTypeConverter::class,
+    ResourceListTypeConverter::class,
     ListContentSummaryTypeConverter::class,
     ListImageTypeConverter::class,
     ContentSummaryTypeConverter::class,
