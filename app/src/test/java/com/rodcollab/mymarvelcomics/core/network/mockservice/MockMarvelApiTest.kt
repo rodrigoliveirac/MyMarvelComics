@@ -8,6 +8,8 @@ import com.rodcollab.mymarvelcomics.core.network.ApiResponseWrapper
 import com.rodcollab.mymarvelcomics.core.utils.StatusCode
 import com.rodcollab.mymarvelcomics.core.utils.getOkHttpClient
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -39,7 +41,7 @@ class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
             )
         )
 
-        val result = createService(DummyService::class.java, client)
+        val result = createService(DummyService::class.java,client)
 
         marvelService = result
 
@@ -53,7 +55,8 @@ class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
         Assert.assertEquals(comicDataWrapper?.status, StatusCode.OK.message)
 
         Assert.assertEquals(comicDataWrapper?.data?.count, 3)
-        Assert.assertEquals(comicDataWrapper?.data!!.results[0].id, 82967)
+
+        assertThat(comicDataWrapper?.data?.results?.get(0)?.id!!, equalTo(82967))
 
     }
 
