@@ -6,9 +6,8 @@ import com.rodcollab.mymarvelcomics.core.MockServiceContent
 import com.rodcollab.mymarvelcomics.core.network.AndroidFileReader
 import com.rodcollab.mymarvelcomics.core.network.ApiResponseWrapper
 import com.rodcollab.mymarvelcomics.core.utils.StatusCode
+import com.rodcollab.mymarvelcomics.core.utils.getOkHttpClient
 import kotlinx.coroutines.test.runTest
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -85,14 +84,6 @@ class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
         Assert.assertEquals(errorResponse.code(), StatusCode.UNAUTHORIZED.code)
         Assert.assertEquals(errorResponse.message(), StatusCode.UNAUTHORIZED.message)
 
-    }
-
-    private fun getOkHttpClient(interceptor: Interceptor): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                interceptor
-            )
-            .build()
     }
 
 }

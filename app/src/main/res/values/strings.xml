@@ -3,4 +3,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="deleted_successfully_from_your_favorites">deleted successfully from your favorites</string>
     <string name="added_succesfully_to_your_favorites">added succesfully to your favorites</string>
+    <string name="something_goes_wrong">something goes wrong</string>
 </resources>

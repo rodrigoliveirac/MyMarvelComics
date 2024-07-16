@@ -39,5 +39,5 @@ class MockInterceptor(private val code: Int, private val fileReader: AndroidFile
         return response
     }
 
-    private fun createGenericErrorResponse() = "{\"code\":\"409\", \"message\":something goes wrong}"
+    private fun createGenericErrorResponse() = StatusCode.GENERIC.message
 }

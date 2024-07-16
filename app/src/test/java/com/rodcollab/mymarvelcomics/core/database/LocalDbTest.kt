@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rodcollab.mymarvelcomics.MyMarvelComicsApp
+import com.rodcollab.mymarvelcomics.core.comicsFromNetwork
 import com.rodcollab.mymarvelcomics.core.data.model.toComic
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.database.dao.FavoriteComicsDao
-import com.rodcollab.mymarvelcomics.core.network.model.CharacterList
-import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
-import com.rodcollab.mymarvelcomics.core.network.model.Thumbnail
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -99,43 +97,5 @@ class LocalDbTest {
     fun `When the user fetch empty favorite list`() = runTest {
         assertThat(favoriteComicsDao.fetchFavoriteComics().size, equalTo(0))
     }
-
-    private fun comicsFromNetwork() = listOf(
-        ComicNetwork(
-            id = 82967,
-            title = "Marvel Previews (2017)",
-            description = "",
-            pageCount = 112,
-            resourceURI = "http://gateway.marvel.com/v1/public/comics/82967",
-            collections = emptyList(),
-            thumbnail = Thumbnail(
-                path = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
-                extension = "jpg"
-            ),
-            images = emptyList(),
-            characters = CharacterList(
-                available = 0,
-                collectionURI = "http://gateway.marvel.com/v1/public/comics/82967/characters",
-                items = emptyList()
-            )
-        ), ComicNetwork(
-            id = 82965,
-            title = "Marvel Previews (2017)",
-            description = "",
-            pageCount = 152,
-            resourceURI = "http://gateway.marvel.com/v1/public/comics/82965",
-            collections = emptyList(),
-            thumbnail = Thumbnail(
-                path = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
-                extension = "jpg"
-            ),
-            images = emptyList(),
-            characters = CharacterList(
-                available = 0,
-                collectionURI = "http://gateway.marvel.com/v1/public/comics/82965/characters",
-                items = emptyList()
-            )
-        )
-    )
 
 }
