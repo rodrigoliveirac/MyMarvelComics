@@ -37,23 +37,36 @@ class CharactersRemoteMediator(
     ): MediatorResult {
         try {
 
+            val loadKey = when(loadType) {
+                LoadType.REFRESH -> currentPage
+                LoadType.PREPEND -> return MediatorResult.Success(
+                    endOfPaginationReached = true
+                )
+                LoadType.APPEND -> {
+                    val lastItem = state.lastItemOrNull()
+                    if(lastItem == null) {
+                        currentPage += state.config.pageSize
+                        currentPage
+                    } else {
+                        currentPage += state.config.pageSize
+                        currentPage
+                    }
+                }
+            }
+
             val response = remoteService.getCharacters(
-                offset = currentPage * state.config.pageSize,
+                offset = loadKey,
                 limit = state.config.pageSize,
             )
 
             val characters = response.body()?.data?.results?.map { characterNetwork ->
-
-                val comics = getEntitiesFromContentSummary(contentSummary = characterNetwork.comics?.items ?: emptyList())
-
-                comicsDao.upsertAll(comics.values.toList())
 
                 CharacterEntity(
                     remoteId = characterNetwork.id,
                     name = characterNetwork.name,
                     description = characterNetwork.description,
                     thumbnail = "${characterNetwork.thumbnail?.path}.${characterNetwork.thumbnail?.extension}",
-                    comics = comics.keys.toList(),
+                    comics = null,
                     resourceURI = characterNetwork.resourceURI
                 )
             } ?: emptyList()
@@ -63,12 +76,7 @@ class CharactersRemoteMediator(
                     charactersDao.clearAll()
                     comicsDao.clearAll()
                 }
-
                 charactersDao.upsertAll(characters)
-            }
-
-            if (currentPage * state.config.pageSize >= response.body()?.data?.count!!) {
-                currentPage++
             }
 
             return MediatorResult.Success(endOfPaginationReached = characters.isEmpty())
