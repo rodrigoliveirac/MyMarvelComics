@@ -21,14 +21,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
 
 interface CharactersRepository {
-    fun getCharacters(pageSize: Int, comicId: Int) : Flow<PagingData<CharacterEntity>>
+    fun getCharacters(pageSize: Int) : Pager<Int,CharacterEntity>
 
     suspend fun getCharacterDetails(characterId: Int, onResult: (ResultOf<CharacterExternal>) -> Unit)
 }
 
-class CharactersRepositoryImpl(
+class CharactersRepositoryImpl @Inject constructor(
     private val transactionProvider: TransactionProvider,
     private val charactersDao: CharactersDao,
     private val comicsDao: ComicsDao,
@@ -36,12 +37,12 @@ class CharactersRepositoryImpl(
 ) : CharactersRepository {
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getCharacters(pageSize: Int, comicId: Int) = Pager(
+    override fun getCharacters(pageSize: Int) = Pager(
         config = PagingConfig(pageSize = pageSize),
         remoteMediator = CharactersRemoteMediator(transactionProvider,charactersDao, comicsDao,remoteService)
     ) {
         charactersDao.charactersPagingSource()
-    }.flow
+    }
 
     override suspend fun getCharacterDetails(characterId: Int, onResult:(ResultOf<CharacterExternal>) -> Unit) {
         val characterDetails = withContext(Dispatchers.IO) {

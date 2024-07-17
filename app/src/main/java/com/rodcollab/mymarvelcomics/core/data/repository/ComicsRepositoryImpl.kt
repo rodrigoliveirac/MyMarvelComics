@@ -20,8 +20,9 @@ import com.rodcollab.mymarvelcomics.core.utils.safeCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
 
-class ComicsRepositoryImpl(
+class ComicsRepositoryImpl @Inject constructor(
     private val transactionProvider: TransactionProvider,
     private val charactersDao: CharactersDao,
     private val comicsDao: ComicsDao,
