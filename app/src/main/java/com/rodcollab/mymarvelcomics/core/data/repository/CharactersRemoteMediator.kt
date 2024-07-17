@@ -7,6 +7,7 @@ import androidx.paging.RemoteMediator
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
+import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
 import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
@@ -20,6 +21,7 @@ import java.io.IOException
 class CharactersRemoteMediator(
     private val transactionProvider: TransactionProvider,
     private val charactersDao: CharactersDao,
+    private val comicsDao: ComicsDao,
     private val remoteService: MarvelApi,
 ) : RemoteMediator<Int, CharacterEntity>() {
 
@@ -44,17 +46,20 @@ class CharactersRemoteMediator(
 
                 val comics = getEntitiesFromContentSummary(contentSummary = characterNetwork.comics.items)
 
+                comicsDao.upsertAll(comics.values.toList())
+
                 CharacterEntity(
                     name = characterNetwork.name,
                     description = characterNetwork.description,
-                    thumbnail = characterNetwork.thumbnail,
-                    comics = comics
+                    thumbnail = "${characterNetwork.thumbnail.path}.${characterNetwork.thumbnail.extension}",
+                    comics = comics.keys.toList()
                 )
             } ?: emptyList()
 
             transactionProvider.runAsTransaction {
                 if (loadType == LoadType.REFRESH) {
                     charactersDao.clearAll()
+                    comicsDao.clearAll()
                 }
 
                 charactersDao.upsertAll(characters)
@@ -74,15 +79,17 @@ class CharactersRemoteMediator(
         }
     }
 
-    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): List<ComicEntity?> {
+    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): Map<Int,ComicEntity?> {
 
-        val comics = contentSummary.map { resourceList ->
+        val hmComics = hashMapOf<Int,ComicEntity?>()
+
+        contentSummary.forEach { resourceList ->
 
             val remoteId = resourceList.resourceURI.lastPath().toInt()
 
-            getItemFromService<ComicNetwork>(remoteId, resourceList)
+            mapOf(remoteId to getItemFromService<ComicNetwork>(remoteId, resourceList))
         }
-        return comics
+        return hmComics
     }
 
     private suspend fun <T>getItemFromService(

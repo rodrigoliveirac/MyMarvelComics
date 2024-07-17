@@ -10,6 +10,6 @@ data class CharacterEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     @ColumnInfo("character_name") val name: String,
     @ColumnInfo("character_description")val description: String,
-    @ColumnInfo("character_thumbnail") val thumbnail: Image,
-    @ColumnInfo("character_comic") val comics: List<ComicEntity?>
+    @ColumnInfo("character_thumbnail") val thumbnail: String,
+    @ColumnInfo("character_comic") val comics: List<Int>
 )
