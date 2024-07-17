@@ -10,6 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.rodcollab.mymarvelcomics.ui.CharactersViewModel
+import com.rodcollab.mymarvelcomics.ui.screens.CharactersScreen
 import com.rodcollab.mymarvelcomics.ui.theme.MyMarvelComicsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +28,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val viewModel = hiltViewModel<CharactersViewModel>()
+                    val characters = viewModel.data.collectAsLazyPagingItems()
+                    CharactersScreen(characters = characters)
                 }
             }
         }

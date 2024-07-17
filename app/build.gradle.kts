@@ -65,7 +65,6 @@ dependencies {
     testImplementation(libs.roboeletric)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -88,6 +87,8 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.gson)
 
+    implementation(libs.coil.compose)
+
     implementation(libs.dagger.hilt)
     ksp(libs.hilt.compiler)
 
@@ -98,5 +99,8 @@ dependencies {
 
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
+
+    implementation(libs.navigation.compose)
+    implementation(libs.navigation.compose.hilt)
 
 }

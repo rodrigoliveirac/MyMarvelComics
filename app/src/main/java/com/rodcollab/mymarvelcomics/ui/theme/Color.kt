@@ -1,11 +1,34 @@
 package com.rodcollab.mymarvelcomics.ui.theme
 
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+object ColorApp {
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+    val Dark10 = Color(0x1A000000)
+    val AlphaBlack = Color(0xEB000000)
+
+    val Gray100 = Color(0xFF2C2C2C)
+
+    val LightColors = lightColorScheme(
+        primary = Color(0xFFE50914),
+        secondary = Color(0xFFF5F5F1),
+        background = Color(0xFFFFFFFF),
+        onBackground = Color(0xFFFFFFFF),
+        surface = Color(0xFFC9C9C9),
+        onSurface = Color(0xFFF5F5F1),
+        onSurfaceVariant = Color(0xFFBBBBBB)
+    )
+
+    val DarkColors = darkColorScheme(
+        primary = Color(0xFFE50914),
+        secondary = Color(0xFFF5F5F1),
+        background = Color(0xFF000000),
+        onBackground = Color(0xFFFFFFFF),
+        surface = Color(0xFF121212),
+        onSurface = Color(0xFFF5F5F1),
+        onSurfaceVariant = Color(0XFF7b7b7b)
+    )
+
+}
