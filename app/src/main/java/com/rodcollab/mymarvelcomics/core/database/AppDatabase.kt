@@ -30,6 +30,8 @@ import com.rodcollab.mymarvelcomics.core.database.model.FavoriteComicEntity
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favoriteComicsDao(): FavoriteComicsDao
+    abstract fun comicsDao(): ComicsDao
+    abstract fun charactersDao(): CharactersDao
 
     companion object {
 
