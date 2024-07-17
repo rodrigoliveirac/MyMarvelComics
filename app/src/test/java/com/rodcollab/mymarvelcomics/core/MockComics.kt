@@ -1,6 +1,6 @@
 package com.rodcollab.mymarvelcomics.core
 
-import com.rodcollab.mymarvelcomics.core.network.model.CharacterList
+import com.rodcollab.mymarvelcomics.core.network.model.ResourceList
 import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
 import com.rodcollab.mymarvelcomics.core.network.model.Thumbnail
 
@@ -17,7 +17,7 @@ fun comicsFromNetwork() = listOf(
             extension = "jpg"
         ),
         images = emptyList(),
-        characters = CharacterList(
+        characters = ResourceList(
             available = 0,
             collectionURI = "http://gateway.marvel.com/v1/public/comics/82967/characters",
             items = emptyList()
@@ -34,7 +34,7 @@ fun comicsFromNetwork() = listOf(
             extension = "jpg"
         ),
         images = emptyList(),
-        characters = CharacterList(
+        characters = ResourceList(
             available = 0,
             collectionURI = "http://gateway.marvel.com/v1/public/comics/82965/characters",
             items = emptyList()

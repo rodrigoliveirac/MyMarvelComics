@@ -5,25 +5,33 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.rodcollab.mymarvelcomics.core.database.converters.CharacterListTypeConverter
+import com.rodcollab.mymarvelcomics.core.database.converters.ResourceListTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ContentSummaryTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ListContentSummaryTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ListImageTypeConverter
+import com.rodcollab.mymarvelcomics.core.database.converters.ListIntTypeConverter
 import com.rodcollab.mymarvelcomics.core.database.converters.ThumbnailTypeConverter
+import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
+import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.dao.FavoriteComicsDao
+import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
+import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
 import com.rodcollab.mymarvelcomics.core.database.model.FavoriteComicEntity
 
 @TypeConverters(
-    CharacterListTypeConverter::class,
+    ResourceListTypeConverter::class,
     ListContentSummaryTypeConverter::class,
     ListImageTypeConverter::class,
     ContentSummaryTypeConverter::class,
-    ThumbnailTypeConverter::class
+    ThumbnailTypeConverter::class,
+    ListIntTypeConverter::class
 )
-@Database(entities = [FavoriteComicEntity::class], version = 1, exportSchema = false)
+@Database(entities = [FavoriteComicEntity::class,ComicEntity::class, CharacterEntity::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favoriteComicsDao(): FavoriteComicsDao
+    abstract fun comicsDao(): ComicsDao
+    abstract fun charactersDao(): CharactersDao
 
     companion object {
 

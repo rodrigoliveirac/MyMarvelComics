@@ -8,7 +8,8 @@ import com.rodcollab.mymarvelcomics.core.data.repository.ComicsRepository
 import com.rodcollab.mymarvelcomics.core.database.FakeComicsDao
 import com.rodcollab.mymarvelcomics.core.model.Comic
 import com.rodcollab.mymarvelcomics.core.network.mockservice.DummyService
-import com.rodcollab.mymarvelcomics.core.network.model.ComicDataWrapper
+import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
+import com.rodcollab.mymarvelcomics.core.network.model.ResponseContainer
 import com.rodcollab.mymarvelcomics.core.utils.ResultOf
 import com.rodcollab.mymarvelcomics.core.utils.safeCallback
 import retrofit2.Response
@@ -30,7 +31,7 @@ class FakeComicsRepository(
     }
 
     fun handleComicsResponse(
-        response: Response<ComicDataWrapper>,
+        response: Response<ResponseContainer<ComicNetwork>>,
         onResult: (ResultOf<List<Comic>>) -> Unit,
     ) {
         if (response.isSuccessful) {
@@ -48,7 +49,7 @@ class FakeComicsRepository(
         }
     }
 
-    fun getComicsFromWrapper(response: Response<ComicDataWrapper>) =
+    fun getComicsFromWrapper(response: Response<ResponseContainer<ComicNetwork>>) =
         response.body()?.data?.results?.map {
             it.toComic()
         } ?: emptyList()

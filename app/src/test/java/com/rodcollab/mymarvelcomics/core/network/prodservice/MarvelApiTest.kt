@@ -6,7 +6,8 @@ import com.rodcollab.mymarvelcomics.BuildConfig
 import com.rodcollab.mymarvelcomics.core.utils.md5
 import com.rodcollab.mymarvelcomics.core.network.interceptors.AuthInterceptor
 import com.rodcollab.mymarvelcomics.core.network.interceptors.UserAgentInterceptor
-import com.rodcollab.mymarvelcomics.core.network.model.ComicDataWrapper
+import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
+import com.rodcollab.mymarvelcomics.core.network.model.ResponseContainer
 import com.rodcollab.mymarvelcomics.core.network.service.MarvelApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.OkHttpClient
@@ -26,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MarvelApiTest  {
 
     private lateinit var marvelService: MarvelApi
-    private var comicsWrapper: ComicDataWrapper? = null
+    private var comicsWrapper: ResponseContainer<ComicNetwork>? = null
     private lateinit var context: Context
     @Before
     fun setup()  {
@@ -101,8 +102,8 @@ class MarvelApiTest  {
         assertTrue(comicsWrapper == null)
     }
 
-    private suspend fun fetchComics() : ComicDataWrapper? {
-        val comics = marvelService.getComics(2)
+    private suspend fun fetchComics() : ResponseContainer<ComicNetwork>? {
+        val comics = marvelService.getComics(15, offset = 0)
         return if (comics.isSuccessful) {
             comics.body()
         } else {

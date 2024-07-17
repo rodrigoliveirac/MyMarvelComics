@@ -1,23 +1,23 @@
-package com.rodcollab.mymarvelcomics.core.model
+package com.rodcollab.mymarvelcomics.core.database.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.rodcollab.mymarvelcomics.core.network.model.ContentSummary
 import com.rodcollab.mymarvelcomics.core.network.model.Image
 import com.rodcollab.mymarvelcomics.core.network.model.ResourceList
 import com.rodcollab.mymarvelcomics.core.network.model.Thumbnail
 
-data class Comic(
-    val resourceList: ResourceList?,
-    val characters: List<CharacterExternal>?,
+@Entity("comics")
+data class ComicEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
+    val remoteId: Int,
+    val characters: List<Int>?,
     val collections: List<ContentSummary>?,
     val description: String?,
-    val id: Int,
-    val isFavorite: Boolean,
     val images: List<Image?>?,
     val pageCount: Int?,
     val resourceURI: String?,
     val thumbnail: Thumbnail?,
     val title: String?,
-) {
-    val urlImage = thumbnail?.let { thumbnail ->  "${thumbnail.path}.${thumbnail.extension}" }
-    val urlImages = images?.map { img -> img?.let { "${it.path}.${it.extension}" } }
-}
+    val resourceList: ResourceList?
+)
