@@ -18,6 +18,9 @@ interface MarvelApi {
     @GET("v1/public/comics/{comicId}")
     suspend fun getComicDetails(@Path("comicId") comicId: Int) : Response<ResponseContainer<ComicNetwork>>
 
+    @GET("v1/public/characters/{characterId}")
+    suspend fun getCharacterDetails(@Path("characterId") characterId: Int) : Response<ResponseContainer<CharacterNetwork>>
+
     @GET("v1/public/characters")
     suspend fun getCharacters(
         @Query("limit") limit: Int,

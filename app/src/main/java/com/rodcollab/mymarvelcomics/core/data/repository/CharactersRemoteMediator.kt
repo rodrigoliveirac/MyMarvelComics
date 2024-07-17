@@ -49,6 +49,7 @@ class CharactersRemoteMediator(
                 comicsDao.upsertAll(comics.values.toList())
 
                 CharacterEntity(
+                    remoteId = characterNetwork.id,
                     name = characterNetwork.name,
                     description = characterNetwork.description,
                     thumbnail = "${characterNetwork.thumbnail.path}.${characterNetwork.thumbnail.extension}",

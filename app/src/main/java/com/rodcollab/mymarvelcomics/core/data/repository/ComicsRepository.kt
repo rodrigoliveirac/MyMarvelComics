@@ -9,4 +9,6 @@ interface ComicsRepository {
     suspend fun readFavoriteComic(comicId: Int, onResult: (ResultOf<Comic>) -> Unit)
     suspend fun addFavoriteComic(comic: Comic, onResult: (ResultOf<Int>) -> Unit)
     suspend fun deleteFavoriteComic(comicId: Int, onResult: (ResultOf<Int>) -> Unit)
+    suspend fun readComic(comicId: Int, onResult: (ResultOf<Comic>) -> Unit)
+
 }

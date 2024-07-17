@@ -15,6 +15,9 @@ interface CharactersDao {
     @Query("SELECT * FROM characters ORDER BY id ASC")
     fun charactersPagingSource(): PagingSource<Int, CharacterEntity>
 
+    @Query("SELECT * FROM characters WHERE character_remoteId =:characterId")
+    fun characterById(characterId: Int): CharacterEntity?
+
     @Query("DELETE FROM characters")
     suspend fun clearAll()
 }
