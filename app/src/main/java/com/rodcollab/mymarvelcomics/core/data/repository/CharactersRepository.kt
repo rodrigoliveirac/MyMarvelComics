@@ -47,7 +47,7 @@ class CharactersRepositoryImpl(
         val characterDetails = withContext(Dispatchers.IO) {
             charactersDao.characterById(characterId)
         }
-        characterDetails?.let {characterExternal ->
+        characterDetails?.let { characterExternal ->
             val comics = characterExternal.comics?.map { comicId ->
                 comicsDao.comicById(comicId).toComic()
             }

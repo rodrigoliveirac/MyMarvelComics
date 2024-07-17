@@ -18,12 +18,12 @@ import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class CharactersRemoteMediator(
+class ComicsRemoteMediator(
     private val transactionProvider: TransactionProvider,
     private val charactersDao: CharactersDao,
     private val comicsDao: ComicsDao,
     private val remoteService: MarvelApi,
-) : RemoteMediator<Int, CharacterEntity>() {
+) : RemoteMediator<Int, ComicEntity>() {
 
     private var currentPage: Int = 0
 
@@ -33,45 +33,49 @@ class CharactersRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, CharacterEntity>,
+        state: PagingState<Int, ComicEntity>,
     ): MediatorResult {
         try {
 
-            val response = remoteService.getCharacters(
+            val response = remoteService.getComics(
                 offset = currentPage * state.config.pageSize,
                 limit = state.config.pageSize,
             )
 
-            val characters = response.body()?.data?.results?.map { characterNetwork ->
+            val comics = response.body()?.data?.results?.map { comicNetwork ->
 
-                val comics = getEntitiesFromContentSummary(contentSummary = characterNetwork.comics?.items ?: emptyList())
+                val characters = getEntitiesFromContentSummary(contentSummary = comicNetwork.characters?.items ?: emptyList())
 
-                comicsDao.upsertAll(comics.values.toList())
+                charactersDao.upsertAll(characters.values.toList())
 
-                CharacterEntity(
-                    remoteId = characterNetwork.id,
-                    name = characterNetwork.name,
-                    description = characterNetwork.description,
-                    thumbnail = "${characterNetwork.thumbnail?.path}.${characterNetwork.thumbnail?.extension}",
-                    comics = comics.keys.toList(),
-                    resourceURI = characterNetwork.resourceURI
+                ComicEntity(
+                    remoteId = comicNetwork.id,
+                    title = comicNetwork.title,
+                    description = comicNetwork.description,
+                    thumbnail = comicNetwork.thumbnail,
+                    characters = characters.keys.toList(),
+                    images = comicNetwork.images,
+                    collections = comicNetwork.collections,
+                    resourceURI = comicNetwork.resourceURI,
+                    pageCount = comicNetwork.pageCount,
+                    resourceList = comicNetwork.characters
                 )
             } ?: emptyList()
 
             transactionProvider.runAsTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    charactersDao.clearAll()
                     comicsDao.clearAll()
+                    charactersDao.clearAll()
                 }
 
-                charactersDao.upsertAll(characters)
+                comicsDao.upsertAll(comics)
             }
 
             if (currentPage * state.config.pageSize >= response.body()?.data?.count!!) {
                 currentPage++
             }
 
-            return MediatorResult.Success(endOfPaginationReached = characters.isEmpty())
+            return MediatorResult.Success(endOfPaginationReached = comics.isEmpty())
         } catch (e: IOException) {
             return MediatorResult.Error(e)
         } catch (e: HttpException) {
@@ -81,9 +85,9 @@ class CharactersRemoteMediator(
         }
     }
 
-    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): Map<Int,ComicEntity> {
+    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): Map<Int, CharacterEntity> {
 
-        val hmComics = hashMapOf<Int,ComicEntity>()
+        val hmComics = hashMapOf<Int, CharacterEntity>()
 
         contentSummary.forEach { resourceList ->
 
@@ -97,24 +101,21 @@ class CharactersRemoteMediator(
     private suspend fun <T>getItemFromService(
         remoteId: Int,
         resourceList: ContentSummary,
-    ): ComicEntity? {
-        val comicDetails = try {
-            remoteService.getComicDetails(
-                comicId = remoteId,
+    ): CharacterEntity? {
+        val characterDetails = try {
+             remoteService.getCharacterDetails(
+                characterId = remoteId,
             ).body()?.data?.results?.get(0)?.toEntity()
         } catch (e: Exception) {
-            ComicNetwork(
-                title = resourceList.name,
+            CharacterEntity(
+                remoteId = remoteId,
+                name = resourceList.name,
                 resourceURI = resourceList.resourceURI,
-                id = remoteId,
-                collections = null,
                 description = null,
-                pageCount = null,
-                characters = null,
                 thumbnail = null,
-                images = null
-            ).toEntity()
+                comics = null
+            )
         }
-        return comicDetails
+        return characterDetails
     }
 }

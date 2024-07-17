@@ -10,17 +10,18 @@ fun CharacterNetwork.toExternal(comicIds:List<Comic>? = null) =
         id = id,
         name = name,
         description = description,
-        thumbnail = "${thumbnail.path}.${thumbnail.extension}",
+        thumbnail = "${thumbnail?.path}.${thumbnail?.extension}",
         comics = comicIds
     )
 
-fun CharacterNetwork.toEntity(comicIds:List<Int>) =
+fun CharacterNetwork.toEntity(comicIds:List<Int>? = null) =
     CharacterEntity(
         remoteId = id,
         name = name,
         description = description,
-        thumbnail = "${thumbnail.path}.${thumbnail.extension}",
-        comics = comicIds
+        thumbnail = "${thumbnail?.path}.${thumbnail?.extension}",
+        comics = comicIds,
+        resourceURI = resourceURI
     )
 
 fun CharacterEntity.toExternal(comicIds:List<Comic>) =

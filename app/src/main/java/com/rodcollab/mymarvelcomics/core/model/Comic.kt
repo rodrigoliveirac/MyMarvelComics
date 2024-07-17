@@ -6,7 +6,8 @@ import com.rodcollab.mymarvelcomics.core.network.model.ResourceList
 import com.rodcollab.mymarvelcomics.core.network.model.Thumbnail
 
 data class Comic(
-    val characters: ResourceList?,
+    val resourceList: ResourceList?,
+    val characters: List<CharacterExternal>?,
     val collections: List<ContentSummary>?,
     val description: String?,
     val id: Int,

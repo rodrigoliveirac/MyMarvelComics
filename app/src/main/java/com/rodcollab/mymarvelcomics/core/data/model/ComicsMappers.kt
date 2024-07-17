@@ -2,10 +2,11 @@ package com.rodcollab.mymarvelcomics.core.data.model
 
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
 import com.rodcollab.mymarvelcomics.core.database.model.FavoriteComicEntity
+import com.rodcollab.mymarvelcomics.core.model.CharacterExternal
 import com.rodcollab.mymarvelcomics.core.model.Comic
 import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
 
-fun ComicEntity.toComic() =
+fun ComicEntity.toComic(characters: List<CharacterExternal>? = null) =
     Comic(
         id = remoteId,
         title = title,
@@ -16,23 +17,25 @@ fun ComicEntity.toComic() =
         collections = collections,
         resourceURI = resourceURI,
         images = images,
-        isFavorite = false
+        isFavorite = false,
+        resourceList = this.resourceList,
     )
 
-fun ComicNetwork.toEntity(remoteId: Int) =
+fun ComicNetwork.toEntity(characterIds: List<Int>? = null) =
     ComicEntity(
-        remoteId = remoteId,
+        remoteId = id,
         title = title,
         description = description,
         pageCount = pageCount,
         thumbnail = thumbnail,
-        characters = characters,
+        characters = characterIds,
         collections = collections,
         resourceURI = resourceURI,
-        images = images
+        images = images,
+        resourceList = this.characters
     )
 
-fun ComicNetwork.toComic() =
+fun ComicNetwork.toComic(characters: List<CharacterExternal>? = null) =
     Comic(
         id = id,
         title = title,
@@ -43,10 +46,11 @@ fun ComicNetwork.toComic() =
         collections = collections,
         resourceURI = resourceURI,
         images = images,
-        isFavorite = false
+        isFavorite = false,
+        resourceList = this.characters
     )
 
-fun FavoriteComicEntity.toComic() =
+fun FavoriteComicEntity.toComic(characters: List<CharacterExternal>? = null) =
     Comic(
         id = id,
         title = title,
@@ -57,7 +61,8 @@ fun FavoriteComicEntity.toComic() =
         collections = collections,
         resourceURI = resourceURI,
         images = images,
-        isFavorite = false
+        isFavorite = false,
+        resourceList = this.characters
     )
 
 fun Comic.toEntity() =
@@ -67,7 +72,7 @@ fun Comic.toEntity() =
         description = description,
         pageCount = pageCount,
         thumbnail = thumbnail,
-        characters = characters,
+        characters = resourceList,
         collections = collections,
         resourceURI = resourceURI,
         images = images

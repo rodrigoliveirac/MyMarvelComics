@@ -1,11 +1,15 @@
 package com.rodcollab.mymarvelcomics.core.data.repository
 
 import android.util.Log
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.rodcollab.mymarvelcomics.R
 import com.rodcollab.mymarvelcomics.core.utils.ResultOf
 import com.rodcollab.mymarvelcomics.core.data.model.toComic
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
+import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
 import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.dao.FavoriteComicsDao
 import com.rodcollab.mymarvelcomics.core.model.Comic
@@ -19,6 +23,7 @@ import retrofit2.Response
 
 class ComicsRepositoryImpl(
     private val transactionProvider: TransactionProvider,
+    private val charactersDao: CharactersDao,
     private val comicsDao: ComicsDao,
     private val favoritesDao: FavoriteComicsDao,
     private val remoteService: MarvelApi,
@@ -89,9 +94,7 @@ class ComicsRepositoryImpl(
         val comicDetails = withContext(Dispatchers.IO) {
             comicsDao.comicById(comicId)
         }
-        comicDetails.let { comic ->
-            onResult(ResultOf.Success(comic.toComic()))
-        } ?: run {
+        onResult(ResultOf.Success(comicDetails.toComic())) ?: run {
             safeCallback(
                 callback = {
                     remoteService.getComicDetails(comicId)
@@ -123,11 +126,11 @@ class ComicsRepositoryImpl(
         }
     }
 
-//    @OptIn(ExperimentalPagingApi::class)
-//    override fun getPagingComics(pageSize: Int, comicId: Int) = Pager(
-//        config = PagingConfig(pageSize = pageSize),
-//        remoteMediator = CharactersRemoteMediator(transactionProvider,comicsDao, remoteService)
-//    ) {
-//       // cha.comicsPagingSource()
-//    }.flow
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getPagingComics(pageSize: Int, comicId: Int) = Pager(
+        config = PagingConfig(pageSize = pageSize),
+        remoteMediator = ComicsRemoteMediator(transactionProvider,charactersDao, comicsDao, remoteService)
+    ) {
+        comicsDao.comicsPagingSource()
+    }.flow
 }

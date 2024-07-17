@@ -10,7 +10,7 @@ import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
 interface ComicsDao {
 
     @Upsert
-    suspend fun upsertAll(comics: List<ComicEntity?>)
+    suspend fun upsertAll(comics: List<ComicEntity>)
 
     @Query("SELECT * FROM comics ORDER BY id ASC")
     fun comicsPagingSource(): PagingSource<Int, ComicEntity>
