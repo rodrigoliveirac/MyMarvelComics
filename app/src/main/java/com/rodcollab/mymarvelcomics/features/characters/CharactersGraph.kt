@@ -1,5 +1,7 @@
 package com.rodcollab.mymarvelcomics.features.characters
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -24,12 +26,15 @@ fun NavGraphBuilder.characters(navController:NavController) {
     composable(
         route = MMCDestinations.CHARACTER_DETAILS_ROUTE,
         arguments = listOf(
-            navArgument(MMCDestinationsArgs.CHARACTER_ID) { type = NavType.IntType; nullable = false },
+            navArgument(MMCDestinationsArgs.CHARACTER_ID) { type = NavType.IntType },
         )
     ) {
-//        val viewModel = hiltViewModel<CharacterDetailsViewModel>()
-//
-//        CharacterDetailsScreen()
+        val viewModel = hiltViewModel<CharacterDetailsViewModel>()
+        val comics = viewModel.comicsPaging.collectAsLazyPagingItems()
+        val characterDetails by viewModel.uiState.collectAsState()
+        CharacterDetailsScreen(characterDetails,comics) {
+            navController.navigateUp()
+        }
     }
 
 }

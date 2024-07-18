@@ -15,13 +15,13 @@ object MMCScreens {
 }
 
 object MMCDestinationsArgs {
-    const val CHARACTER_ID = "taskId"
-    const val COMIC_ID = "title"
+    const val CHARACTER_ID = "characterId"
+    const val COMIC_ID = "comicId"
 }
 
 object MMCDestinations {
     const val CHARACTERS_ROUTE = CHARACTERS_SCREEN
-    const val CHARACTER_DETAILS_ROUTE =  "$CHARACTER_DETAILS_SCREEN?{$CHARACTER_ID}"
+    const val CHARACTER_DETAILS_ROUTE =  "$CHARACTER_DETAILS_SCREEN/{$CHARACTER_ID}"
     const val COMICS_ROUTE = COMICS_SCREEN
     const val COMIC_DETAILS_ROUTE = "$COMIC_DETAILS_SCREEN/{$COMIC_ID}"
 }

@@ -1,8 +1,13 @@
 package com.rodcollab.mymarvelcomics.core.domain.di
 
 import com.rodcollab.mymarvelcomics.core.data.repository.CharactersRepository
+import com.rodcollab.mymarvelcomics.core.data.repository.ComicsRepository
+import com.rodcollab.mymarvelcomics.core.domain.CharacterUseCase
+import com.rodcollab.mymarvelcomics.core.domain.CharacterUseCaseImpl
 import com.rodcollab.mymarvelcomics.core.domain.CharactersUseCase
 import com.rodcollab.mymarvelcomics.core.domain.CharactersUseCaseImpl
+import com.rodcollab.mymarvelcomics.core.domain.GetComicsByCharId
+import com.rodcollab.mymarvelcomics.core.domain.GetComicsByCharIdImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +21,20 @@ object DomainModule {
     @ViewModelScoped
     @Provides
     fun providesCharactersDomain(
+        comicsRepository: ComicsRepository,
         charactersRepository: CharactersRepository,
-    ): CharactersUseCase {
-        return CharactersUseCaseImpl(charactersRepository)
+
+    ): CharacterDomain {
+        return CharacterDomain(
+            characters = CharactersUseCaseImpl(charactersRepository),
+            character = CharacterUseCaseImpl(charactersRepository),
+            comics = GetComicsByCharIdImpl(comicsRepository)
+        )
     }
 }
+
+data class CharacterDomain(
+    val characters : CharactersUseCase,
+    val character: CharacterUseCase,
+    val comics: GetComicsByCharId
+)

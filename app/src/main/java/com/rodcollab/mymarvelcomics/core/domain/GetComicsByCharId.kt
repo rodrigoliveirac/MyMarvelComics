@@ -7,12 +7,11 @@ import com.rodcollab.mymarvelcomics.core.data.repository.ComicsRepository
 import com.rodcollab.mymarvelcomics.core.model.Comic
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetComicsByCharIdImpl @Inject constructor(private val comics: ComicsRepository) :
+class GetComicsByCharIdImpl (private val comics: ComicsRepository) :
     GetComicsByCharId {
     override fun invoke(charId: Int): Flow<PagingData<Comic>> {
-        return comics.getPagingComicsByCharId(15, charId).map { it.map { it.toComic() } }
+        return comics.getPagingComicsByCharId(15, charId).flow.map { it.map { it.toComic() } }
     }
 }
 

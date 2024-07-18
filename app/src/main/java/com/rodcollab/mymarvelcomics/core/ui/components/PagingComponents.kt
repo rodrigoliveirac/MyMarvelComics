@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,10 +44,36 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @Composable
-internal fun <T : Any> PagingContent(
+internal fun <T : Any> LazyRowPaging(
     modifier: Modifier,
     items: LazyPagingItems<T>,
-    content: @Composable ColumnScope.(T) -> Unit
+    content: @Composable ColumnScope.(T) -> Unit,
+) {
+    Box(modifier = modifier) {
+        if (items.loadState.refresh is LoadState.Loading) {
+            LoadingWithDeadPool(modifier = Modifier.align(Alignment.Center))
+        } else {
+            LazyRow(
+                contentPadding = PaddingValues(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                items(count = items.itemCount) { index ->
+                    val item = items[index] as T
+                    CardScaffold(Modifier.clip(RoundedCornerShape(4.dp)).size(150.dp)) {
+                        content(item)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+internal fun <T : Any> LazyVerticalGridPaging(
+    modifier: Modifier,
+    items: LazyPagingItems<T>,
+    content: @Composable ColumnScope.(T) -> Unit,
 ) {
     Box(modifier = modifier) {
         if (items.loadState.refresh is LoadState.Loading) {
@@ -60,7 +88,9 @@ internal fun <T : Any> PagingContent(
             ) {
                 items(count = items.itemCount) { index ->
                     val item = items[index] as T
-                    CardScaffold {
+                    CardScaffold(Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .aspectRatio(0.8f)) {
                         content(item)
                     }
                 }
@@ -73,7 +103,7 @@ internal fun <T : Any> PagingContent(
 }
 
 @Composable
-internal fun CardScaffold(content: @Composable ColumnScope.()-> Unit) {
+internal fun CardScaffold(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
     Box(
         modifier = Modifier
             .padding(10.dp)
@@ -81,9 +111,7 @@ internal fun CardScaffold(content: @Composable ColumnScope.()-> Unit) {
     ) {
         Card(
             colors = CardDefaults.cardColors(Color.White),
-            modifier = Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .aspectRatio(0.8f)
+            modifier = modifier
         ) {
 
             content()
@@ -93,14 +121,15 @@ internal fun CardScaffold(content: @Composable ColumnScope.()-> Unit) {
 
 @Composable
 internal fun CardContent(
+    modifier: Modifier = Modifier,
     id: Int,
     title: String,
     img: String?,
-    toDetails: (Int)-> Unit
+    toDetails: (Int) -> Unit,
 ) {
     var componentHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
-    Box(modifier = Modifier.clickable { toDetails(id)  }) {
+    Box(modifier = modifier.clickable { toDetails(id) }) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()

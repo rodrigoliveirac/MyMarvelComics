@@ -7,10 +7,8 @@ import com.rodcollab.mymarvelcomics.core.data.repository.CharactersRepository
 import com.rodcollab.mymarvelcomics.core.model.CharacterExternal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-
-class CharactersUseCaseImpl @Inject constructor(private val charactersRepository: CharactersRepository):
+class CharactersUseCaseImpl (private val charactersRepository: CharactersRepository):
     CharactersUseCase {
     override fun invoke(): Flow<PagingData<CharacterExternal>> {
         return charactersRepository.getCharacters(15).flow.map { it.map { it.toExternal(emptyList()) } }

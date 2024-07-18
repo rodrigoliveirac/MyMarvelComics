@@ -13,11 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.paging.LoadState
 import com.rodcollab.mymarvelcomics.core.model.CharacterExternal
 import com.rodcollab.mymarvelcomics.core.ui.components.CardContent
-import com.rodcollab.mymarvelcomics.core.ui.components.PagingContent
+import com.rodcollab.mymarvelcomics.core.ui.components.LazyVerticalGridPaging
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,16 +41,21 @@ fun CharactersScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-
                 title = {
-                Text(style = MaterialTheme.typography.headlineMedium, fontFamily = FontFamily.Serif, text = "CHARACTERS")
+                    Text(
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Light,
+                        text = "Characters"
+                    )
             })
         },
         bottomBar = {
 
         }
     ) { paddingValues ->
-        PagingContent(modifier = Modifier.fillMaxSize().padding(paddingValues),characters) {character ->
+        LazyVerticalGridPaging(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),characters) {character ->
             CardContent(id = character.id, title = character.name, img = character.thumbnail, toDetails = toDetails)
         }
     }

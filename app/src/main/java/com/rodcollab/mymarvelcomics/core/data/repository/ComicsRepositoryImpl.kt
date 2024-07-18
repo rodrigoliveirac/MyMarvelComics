@@ -131,7 +131,7 @@ class ComicsRepositoryImpl @Inject constructor(
         remoteMediator = ComicsRemoteMediator(transactionProvider = transactionProvider, comicsDao = comicsDao, remoteService = remoteService)
     ) {
         comicsDao.comicsPagingSource()
-    }.flow
+    }
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getPagingComicsByCharId(
@@ -142,5 +142,5 @@ class ComicsRepositoryImpl @Inject constructor(
         remoteMediator = ComicsRemoteMediator(charId, transactionProvider, comicsDao, remoteService)
     ) {
         comicsDao.comicsPagingSource()
-    }.flow
+    }
 }

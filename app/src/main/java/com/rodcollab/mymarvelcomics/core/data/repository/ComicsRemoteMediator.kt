@@ -75,11 +75,8 @@ class ComicsRemoteMediator(
                     description = comicNetwork.description,
                     thumbnail = comicNetwork.thumbnail,
                     characters = null,
-                    images = comicNetwork.images,
-                    collections = comicNetwork.collections,
                     resourceURI = comicNetwork.resourceURI,
                     pageCount = comicNetwork.pageCount,
-                    resourceList = comicNetwork.characters
                 )
             } ?: emptyList()
 

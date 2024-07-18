@@ -14,11 +14,11 @@ fun ComicEntity.toComic(characters: List<CharacterExternal>? = null) =
         pageCount = pageCount,
         thumbnail = thumbnail,
         characters = characters,
-        collections = collections,
+        collections = null,
         resourceURI = resourceURI,
-        images = images,
+        images = null,
         isFavorite = false,
-        resourceList = this.resourceList,
+        resourceList = null,
     )
 
 fun ComicNetwork.toEntity(characterIds: List<Int>? = null) =
@@ -29,10 +29,7 @@ fun ComicNetwork.toEntity(characterIds: List<Int>? = null) =
         pageCount = pageCount,
         thumbnail = thumbnail,
         characters = characterIds,
-        collections = collections,
         resourceURI = resourceURI,
-        images = images,
-        resourceList = this.characters
     )
 
 fun ComicNetwork.toComic(characters: List<CharacterExternal>? = null) =
