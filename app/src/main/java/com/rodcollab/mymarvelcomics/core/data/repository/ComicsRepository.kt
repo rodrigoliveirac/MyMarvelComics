@@ -16,4 +16,8 @@ interface ComicsRepository {
     suspend fun readComic(comicId: Int, onResult: (ResultOf<Comic>) -> Unit)
 
     fun getPagingComics(pageSize: Int, comicId: Int) : Flow<PagingData<ComicEntity>>
+
+    fun getPagingComicsByCharId(pageSize: Int, charId: Int) : Flow<PagingData<ComicEntity>>
+
+
 }

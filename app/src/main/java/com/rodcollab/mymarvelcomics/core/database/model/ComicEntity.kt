@@ -9,8 +9,8 @@ import com.rodcollab.mymarvelcomics.core.network.model.Thumbnail
 
 @Entity("comics")
 data class ComicEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
-    val remoteId: Int,
+    val id: Long = 0L,
+    @PrimaryKey val remoteId: Int,
     val characters: List<Int>?,
     val collections: List<ContentSummary>?,
     val description: String?,
@@ -19,5 +19,5 @@ data class ComicEntity(
     val resourceURI: String?,
     val thumbnail: Thumbnail?,
     val title: String?,
-    val resourceList: ResourceList?
+    val resourceList: ResourceList?,
 )

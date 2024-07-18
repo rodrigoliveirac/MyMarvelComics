@@ -27,6 +27,7 @@ pagingRuntime = "3.3.0"
 pagingCompose = "1.0.0-alpha18"
 hiltNavCompose = "1.2.0"
 navigation = "2.7.7"
+coroutinesCore = "1.9.0-RC"
 
 [libraries]
 roboeletric = { group = "org.robolectric", name = "robolectric", version.ref = "roboeletric"}
@@ -50,6 +51,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3",
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 navigation-compose-hilt = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavCompose" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation"}
+
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesCore"}
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}

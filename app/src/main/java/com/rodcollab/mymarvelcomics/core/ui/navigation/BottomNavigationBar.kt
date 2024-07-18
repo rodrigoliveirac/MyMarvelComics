@@ -1,11 +1,8 @@
 package com.rodcollab.mymarvelcomics.core.ui.navigation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
@@ -22,8 +19,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.rodcollab.mymarvelcomics.R
 
 sealed class BottomNavItem(val route: String, val icon: Int, val label: String) {
-    data object Characters : BottomNavItem(MMCDestinations.CHARACTERS, R.drawable.ic_hero, "heros")
-    data object Comics : BottomNavItem(MMCDestinations.COMICS, R.drawable.ic_comics, "comics")
+    data object Characters : BottomNavItem(MMCScreens.CHARACTERS_SCREEN, R.drawable.ic_hero, "heros")
+    data object Comics : BottomNavItem(MMCScreens.COMICS_SCREEN, R.drawable.ic_comics, "comics")
 }
 
 

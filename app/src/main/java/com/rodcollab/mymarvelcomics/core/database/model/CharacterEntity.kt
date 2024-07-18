@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity("characters")
 data class CharacterEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
-    @ColumnInfo("character_remoteId") val remoteId: Int,
+    val id: Long = 0L,
+    @PrimaryKey val remoteId: Int,
     @ColumnInfo("character_name") val name: String,
     @ColumnInfo("character_description")val description: String?,
     @ColumnInfo("character_thumbnail") val thumbnail: String?,

@@ -84,7 +84,6 @@ internal fun CardScaffold(content: @Composable ColumnScope.()-> Unit) {
             modifier = Modifier
                 .clip(RoundedCornerShape(4.dp))
                 .aspectRatio(0.8f)
-                .clickable { }
         ) {
 
             content()
@@ -94,12 +93,14 @@ internal fun CardScaffold(content: @Composable ColumnScope.()-> Unit) {
 
 @Composable
 internal fun CardContent(
+    id: Int,
     title: String,
     img: String?,
+    toDetails: (Int)-> Unit
 ) {
     var componentHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
-    Box {
+    Box(modifier = Modifier.clickable { toDetails(id)  }) {
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()

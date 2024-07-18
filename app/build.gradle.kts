@@ -104,4 +104,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.navigation.compose.hilt)
 
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+
 }

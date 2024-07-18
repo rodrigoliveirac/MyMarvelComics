@@ -15,7 +15,7 @@ import com.rodcollab.mymarvelcomics.features.characters.characters
 fun MMCNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MMCDestinations.CHARACTERS,
+    startDestination: String = MMCDestinations.CHARACTERS_ROUTE,
 ) {
     Scaffold(
         bottomBar = {
@@ -33,7 +33,7 @@ fun MMCNavGraph(
                 startDestination = startDestination,
                 modifier = modifier
             ) {
-                characters()
+                characters(navController)
             }
         }
 

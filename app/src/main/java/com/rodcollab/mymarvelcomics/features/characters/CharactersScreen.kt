@@ -22,7 +22,8 @@ import com.rodcollab.mymarvelcomics.core.ui.components.PagingContent
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersScreen(
-    characters: LazyPagingItems<CharacterExternal>
+    characters: LazyPagingItems<CharacterExternal>,
+    toDetails: (Int) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -49,8 +50,8 @@ fun CharactersScreen(
 
         }
     ) { paddingValues ->
-        PagingContent<CharacterExternal>(modifier = Modifier.fillMaxSize().padding(paddingValues),characters) {character ->
-            CardContent(title = character.name, img = character.thumbnail)
+        PagingContent(modifier = Modifier.fillMaxSize().padding(paddingValues),characters) {character ->
+            CardContent(id = character.id, title = character.name, img = character.thumbnail, toDetails = toDetails)
         }
     }
 

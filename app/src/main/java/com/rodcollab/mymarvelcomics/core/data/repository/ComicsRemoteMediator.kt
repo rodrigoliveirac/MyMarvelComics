@@ -6,7 +6,6 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
-import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
 import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
@@ -19,8 +18,8 @@ import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class ComicsRemoteMediator(
+    private val charId: Int? = null,
     private val transactionProvider: TransactionProvider,
-    private val charactersDao: CharactersDao,
     private val comicsDao: ComicsDao,
     private val remoteService: MarvelApi,
 ) : RemoteMediator<Int, ComicEntity>() {
@@ -37,23 +36,45 @@ class ComicsRemoteMediator(
     ): MediatorResult {
         try {
 
-            val response = remoteService.getComics(
-                offset = currentPage * state.config.pageSize,
-                limit = state.config.pageSize,
-            )
+            val offset = when(loadType) {
+                LoadType.REFRESH -> currentPage
+                LoadType.PREPEND -> return MediatorResult.Success(
+                    endOfPaginationReached = true
+                )
+                LoadType.APPEND -> {
+                    val lastItem = state.lastItemOrNull()
+                    if(lastItem == null) {
+                        currentPage += state.config.pageSize
+                        currentPage
+                    } else {
+                        currentPage += state.config.pageSize
+                        currentPage
+                    }
+                }
+            }
+
+            val response = if (charId != null) {
+                remoteService.getComicsByChar(
+                    characterId = charId,
+                    offset = offset,
+                    limit = state.config.pageSize,
+                )
+            } else {
+                remoteService.getComics(
+                    offset = offset,
+                    limit = state.config.pageSize,
+                )
+            }
+
 
             val comics = response.body()?.data?.results?.map { comicNetwork ->
-
-                val characters = getEntitiesFromContentSummary(contentSummary = comicNetwork.characters?.items ?: emptyList())
-
-                charactersDao.upsertAll(characters.values.toList())
 
                 ComicEntity(
                     remoteId = comicNetwork.id,
                     title = comicNetwork.title,
                     description = comicNetwork.description,
                     thumbnail = comicNetwork.thumbnail,
-                    characters = characters.keys.toList(),
+                    characters = null,
                     images = comicNetwork.images,
                     collections = comicNetwork.collections,
                     resourceURI = comicNetwork.resourceURI,
@@ -65,14 +86,8 @@ class ComicsRemoteMediator(
             transactionProvider.runAsTransaction {
                 if (loadType == LoadType.REFRESH) {
                     comicsDao.clearAll()
-                    charactersDao.clearAll()
                 }
-
                 comicsDao.upsertAll(comics)
-            }
-
-            if (currentPage * state.config.pageSize >= response.body()?.data?.count!!) {
-                currentPage++
             }
 
             return MediatorResult.Success(endOfPaginationReached = comics.isEmpty())
@@ -98,12 +113,12 @@ class ComicsRemoteMediator(
         return hmComics
     }
 
-    private suspend fun <T>getItemFromService(
+    private suspend fun <T> getItemFromService(
         remoteId: Int,
         resourceList: ContentSummary,
     ): CharacterEntity? {
         val characterDetails = try {
-             remoteService.getCharacterDetails(
+            remoteService.getCharacterDetails(
                 characterId = remoteId,
             ).body()?.data?.results?.get(0)?.toEntity()
         } catch (e: Exception) {

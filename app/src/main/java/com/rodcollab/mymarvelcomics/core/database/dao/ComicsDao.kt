@@ -12,7 +12,7 @@ interface ComicsDao {
     @Upsert
     suspend fun upsertAll(comics: List<ComicEntity>)
 
-    @Query("SELECT * FROM comics ORDER BY id ASC")
+    @Query("SELECT * FROM comics ORDER BY remoteId ASC")
     fun comicsPagingSource(): PagingSource<Int, ComicEntity>
 
     @Query("SELECT * FROM comics WHERE remoteId = :id")
