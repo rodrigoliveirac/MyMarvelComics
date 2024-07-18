@@ -144,7 +144,7 @@ class ComicsRepositoryImpl @Inject constructor(
         comicsDao.comicsPagingSource()
     }
 
-    override suspend fun getComicDetails(comicId: Int, onResult:(ResultOf<Comic>) -> Unit) {
+    override suspend fun getComicDetails(comicId: Int, onResult: (ResultOf<Comic>) -> Unit) {
         val comicDetails = withContext(Dispatchers.IO) {
             comicsDao.comicById(comicId)
         }

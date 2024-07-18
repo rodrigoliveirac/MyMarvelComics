@@ -30,6 +30,7 @@ class CharactersRemoteMediator(
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, CharacterEntity>,
@@ -72,11 +73,10 @@ class CharactersRemoteMediator(
             val characters = response.body()?.data?.results?.map { characterNetwork ->
 
                 CharacterEntity(
-                    remoteId = characterNetwork.id,
+                    id = characterNetwork.id,
                     name = characterNetwork.name,
                     description = characterNetwork.description,
                     thumbnail = "${characterNetwork.thumbnail?.path}.${characterNetwork.thumbnail?.extension}",
-                    comics = null,
                     resourceURI = characterNetwork.resourceURI
                 )
             } ?: emptyList()

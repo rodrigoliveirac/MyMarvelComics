@@ -18,11 +18,7 @@ fun MMCNavGraph(
     navController: NavHostController = rememberNavController(),
     startDestination: String = MMCDestinations.CHARACTERS_ROUTE,
 ) {
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController = navController)
-        }
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
 
         Box(
             modifier = Modifier

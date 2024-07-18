@@ -70,11 +70,10 @@ class ComicsRemoteMediator(
             val comics = response.body()?.data?.results?.map { comicNetwork ->
 
                 ComicEntity(
-                    remoteId = comicNetwork.id,
+                    id = comicNetwork.id,
                     title = comicNetwork.title,
                     description = comicNetwork.description,
                     thumbnail = comicNetwork.thumbnail,
-                    characters = null,
                     resourceURI = comicNetwork.resourceURI,
                     pageCount = comicNetwork.pageCount,
                 )
@@ -120,12 +119,11 @@ class ComicsRemoteMediator(
             ).body()?.data?.results?.get(0)?.toEntity()
         } catch (e: Exception) {
             CharacterEntity(
-                remoteId = remoteId,
+                id = remoteId,
                 name = resourceList.name,
                 resourceURI = resourceList.resourceURI,
                 description = null,
                 thumbnail = null,
-                comics = null
             )
         }
         return characterDetails

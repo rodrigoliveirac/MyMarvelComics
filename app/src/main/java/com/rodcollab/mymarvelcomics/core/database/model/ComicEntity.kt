@@ -6,9 +6,7 @@ import com.rodcollab.mymarvelcomics.core.network.model.Thumbnail
 
 @Entity("comics")
 data class ComicEntity(
-    val id: Long = 0L,
-    @PrimaryKey val remoteId: Int,
-    val characters: List<Int>?,
+    @PrimaryKey val id: Int,
     val description: String?,
     val pageCount: Int?,
     val resourceURI: String?,

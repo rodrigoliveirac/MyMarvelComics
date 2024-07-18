@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,6 +45,8 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.rodcollab.mymarvelcomics.R
+import com.rodcollab.mymarvelcomics.theme.ColorApp
 
 @Composable
 internal fun <T : Any> LazyRowPaging(
@@ -60,7 +65,10 @@ internal fun <T : Any> LazyRowPaging(
             ) {
                 items(count = items.itemCount) { index ->
                     val item = items[index] as T
-                    CardScaffold(Modifier.clip(RoundedCornerShape(4.dp)).size(150.dp)) {
+                    CardScaffold(
+                        Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .size(150.dp)) {
                         content(item)
                     }
                 }
@@ -88,9 +96,10 @@ internal fun <T : Any> LazyVerticalGridPaging(
             ) {
                 items(count = items.itemCount) { index ->
                     val item = items[index] as T
-                    CardScaffold(Modifier
-                        .clip(RoundedCornerShape(4.dp))
-                        .aspectRatio(0.8f)) {
+                    CardScaffold(
+                        Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .aspectRatio(0.8f)) {
                         content(item)
                     }
                 }
@@ -121,10 +130,13 @@ internal fun CardScaffold(modifier: Modifier = Modifier, content: @Composable Co
 
 @Composable
 internal fun CardContent(
+    hideHeart: Boolean,
+    isFavorite: Boolean,
     modifier: Modifier = Modifier,
     id: Int,
     title: String,
     img: String?,
+    onFavorite: () -> Unit = { },
     toDetails: (Int) -> Unit,
 ) {
     var componentHeight by remember { mutableStateOf(0.dp) }
@@ -133,7 +145,7 @@ internal fun CardContent(
         AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = componentHeight)
+                .padding(bottom = componentHeight + 5.dp)
                 .clip(
                     RoundedCornerShape(12.dp)
                 ),
@@ -171,6 +183,11 @@ internal fun CardContent(
             text = title ?: "",
             maxLines = 1
         )
+        if(!hideHeart) {
+            IconButton(modifier = Modifier.align(Alignment.BottomEnd), onClick = { onFavorite() }) {
+                Icon(tint = ColorApp.favorite, painter = painterResource(id = if(isFavorite)  R.drawable.ic_favorite else  R.drawable.ic_unfavorite), contentDescription = null)
+            }
+        }
     }
 }
 
