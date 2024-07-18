@@ -1,4 +1,4 @@
-package com.rodcollab.mymarvelcomics.domain
+package com.rodcollab.mymarvelcomics.core.domain
 
 import androidx.paging.PagingData
 import androidx.paging.map

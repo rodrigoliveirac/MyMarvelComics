@@ -39,7 +39,7 @@ class CharactersRepositoryImpl @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     override fun getCharacters(pageSize: Int) = Pager(
         config = PagingConfig(pageSize = pageSize),
-        remoteMediator = CharactersRemoteMediator(transactionProvider,charactersDao, comicsDao,remoteService)
+        remoteMediator = CharactersRemoteMediator(transactionProvider,charactersDao,remoteService)
     ) {
         charactersDao.charactersPagingSource()
     }

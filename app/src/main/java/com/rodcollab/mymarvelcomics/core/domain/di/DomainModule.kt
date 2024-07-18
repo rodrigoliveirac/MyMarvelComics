@@ -1,8 +1,8 @@
-package com.rodcollab.mymarvelcomics.domain.di
+package com.rodcollab.mymarvelcomics.core.domain.di
 
 import com.rodcollab.mymarvelcomics.core.data.repository.CharactersRepository
-import com.rodcollab.mymarvelcomics.domain.CharactersUseCase
-import com.rodcollab.mymarvelcomics.domain.CharactersUseCaseImpl
+import com.rodcollab.mymarvelcomics.core.domain.CharactersUseCase
+import com.rodcollab.mymarvelcomics.core.domain.CharactersUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -21,7 +21,6 @@ import java.io.IOException
 class CharactersRemoteMediator(
     private val transactionProvider: TransactionProvider,
     private val charactersDao: CharactersDao,
-    private val comicsDao: ComicsDao,
     private val remoteService: MarvelApi,
 ) : RemoteMediator<Int, CharacterEntity>() {
 
@@ -74,7 +73,6 @@ class CharactersRemoteMediator(
             transactionProvider.runAsTransaction {
                 if (loadType == LoadType.REFRESH) {
                     charactersDao.clearAll()
-                    comicsDao.clearAll()
                 }
                 charactersDao.upsertAll(characters)
             }
