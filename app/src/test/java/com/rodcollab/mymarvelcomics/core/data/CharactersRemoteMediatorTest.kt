@@ -72,9 +72,9 @@ class CharactersRemoteMediatorTest  {
         }
 
         val remoteMediator = CharactersRemoteMediator(
+            comicId = null,
             DefaultTransactionProvider(db),
             charactersDao,
-            comicsDao,
             service
         )
         val pagingState = PagingState<Int, CharacterEntity>(
@@ -95,9 +95,9 @@ class CharactersRemoteMediatorTest  {
         // data here.
 
         val remoteMediator = CharactersRemoteMediator(
+            comicId = null,
             DefaultTransactionProvider(db),
             charactersDao,
-            comicsDao,
             service
         )
         val pagingState = PagingState<Int, CharacterEntity>(
@@ -116,9 +116,9 @@ class CharactersRemoteMediatorTest  {
         // Set up failure message to throw exception from the mock API.
         service.failureMsg = "Throw test failure"
         val remoteMediator = CharactersRemoteMediator(
+            comicId = null,
             DefaultTransactionProvider(db),
             charactersDao,
-            comicsDao,
             service
         )
         val pagingState = PagingState<Int, CharacterEntity>(

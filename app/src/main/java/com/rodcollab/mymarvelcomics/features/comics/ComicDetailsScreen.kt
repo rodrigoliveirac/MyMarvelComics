@@ -28,6 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,14 +67,11 @@ fun ComicDetailsScreen(
 
     val sheetState = rememberModalBottomSheetState()
 
+    var errorFromPaging by rememberSaveable { mutableStateOf(false) }
+
     LaunchedEffect(key1 = characters.loadState) {
         if (characters.loadState.refresh is LoadState.Error) {
-            Toast.makeText(
-                context,
-                "Error: " + (characters.loadState.refresh as LoadState.Error).error.message,
-                Toast.LENGTH_LONG
-            ).show()
-
+            errorFromPaging = true
         }
     }
 
@@ -105,7 +106,7 @@ fun ComicDetailsScreen(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp,top = 24.dp, end = 16.dp, bottom = 16.dp)
+                    .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 16.dp)
                     .size(width = 240.dp, height = 200.dp)
             ) {
                 CardContent(
@@ -161,12 +162,16 @@ fun ComicDetailsScreen(
                 Text(style = MaterialTheme.typography.headlineMedium, text = "Are you sure?")
                 Text(
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp),
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     text = uiState.askFirst
                 )
 
-                Row(modifier = Modifier.weight(1f).padding(16.dp),verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp),verticalAlignment = Alignment.CenterVertically) {
                     Button(
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
@@ -200,7 +205,6 @@ fun ComicDetailsScreen(
                     }
                 }
             }
-
         }
     }
 

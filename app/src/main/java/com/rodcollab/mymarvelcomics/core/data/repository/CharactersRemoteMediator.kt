@@ -1,5 +1,6 @@
 package com.rodcollab.mymarvelcomics.core.data.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -9,8 +10,10 @@ import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
+import com.rodcollab.mymarvelcomics.core.network.model.CharacterNetwork
 import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
 import com.rodcollab.mymarvelcomics.core.network.model.ContentSummary
+import com.rodcollab.mymarvelcomics.core.network.model.ResponseContainer
 import com.rodcollab.mymarvelcomics.core.network.service.MarvelApi
 import com.rodcollab.mymarvelcomics.core.network.service.lastPath
 import retrofit2.HttpException
@@ -61,12 +64,20 @@ class CharactersRemoteMediator(
                     offset = loadKey,
                     limit = state.config.pageSize,
                 )
-
             } else {
-                remoteService.getCharacters(
-                    offset = loadKey,
-                    limit = state.config.pageSize,
-                )
+                val response = try {
+                    remoteService.getCharacters(
+                        offset = loadKey,
+                        limit = state.config.pageSize,
+                    )
+                } catch(e: Exception) {
+                    Log.d("NETWORK_FETCH_CHARACTERS", e.toString())
+                    remoteService.getCharacters(
+                        offset = loadKey,
+                        limit = state.config.pageSize,
+                    )
+                }
+                response
             }
 
 
