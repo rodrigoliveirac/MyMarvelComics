@@ -7,7 +7,6 @@ import androidx.paging.RemoteMediator
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
-import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
 import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
@@ -19,6 +18,7 @@ import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
 class CharactersRemoteMediator(
+    private val comicId: Int? = null,
     private val transactionProvider: TransactionProvider,
     private val charactersDao: CharactersDao,
     private val remoteService: MarvelApi,
@@ -36,14 +36,15 @@ class CharactersRemoteMediator(
     ): MediatorResult {
         try {
 
-            val loadKey = when(loadType) {
+            val loadKey = when (loadType) {
                 LoadType.REFRESH -> currentPage
                 LoadType.PREPEND -> return MediatorResult.Success(
                     endOfPaginationReached = true
                 )
+
                 LoadType.APPEND -> {
                     val lastItem = state.lastItemOrNull()
-                    if(lastItem == null) {
+                    if (lastItem == null) {
                         currentPage += state.config.pageSize
                         currentPage
                     } else {
@@ -53,10 +54,20 @@ class CharactersRemoteMediator(
                 }
             }
 
-            val response = remoteService.getCharacters(
-                offset = loadKey,
-                limit = state.config.pageSize,
-            )
+            val response = if (comicId != null) {
+                remoteService.getCharactersByComicId(
+                    comicId = comicId,
+                    offset = loadKey,
+                    limit = state.config.pageSize,
+                )
+
+            } else {
+                remoteService.getCharacters(
+                    offset = loadKey,
+                    limit = state.config.pageSize,
+                )
+            }
+
 
             val characters = response.body()?.data?.results?.map { characterNetwork ->
 
@@ -87,9 +98,9 @@ class CharactersRemoteMediator(
         }
     }
 
-    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): Map<Int,ComicEntity> {
+    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): Map<Int, ComicEntity> {
 
-        val hmComics = hashMapOf<Int,ComicEntity>()
+        val hmComics = hashMapOf<Int, ComicEntity>()
 
         contentSummary.forEach { resourceList ->
 
@@ -100,7 +111,7 @@ class CharactersRemoteMediator(
         return hmComics
     }
 
-    private suspend fun <T>getItemFromService(
+    private suspend fun <T> getItemFromService(
         remoteId: Int,
         resourceList: ContentSummary,
     ): ComicEntity? {

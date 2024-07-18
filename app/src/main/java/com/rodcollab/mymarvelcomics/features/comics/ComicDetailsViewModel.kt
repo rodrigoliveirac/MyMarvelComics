@@ -1,11 +1,11 @@
-package com.rodcollab.mymarvelcomics.features.characters
+package com.rodcollab.mymarvelcomics.features.comics
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.rodcollab.mymarvelcomics.core.domain.di.CharacterDomain
-import com.rodcollab.mymarvelcomics.core.model.CharacterExternal
+import com.rodcollab.mymarvelcomics.core.domain.ComicDomain
+import com.rodcollab.mymarvelcomics.core.model.Comic
 import com.rodcollab.mymarvelcomics.core.ui.UiState
 import com.rodcollab.mymarvelcomics.core.utils.ResultOf
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,22 +15,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
-class CharacterDetailsViewModel @Inject constructor(
-    domain: CharacterDomain,
+class ComicDetailsViewModel @Inject constructor(
+    domain: ComicDomain,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val characterId: Int = checkNotNull(savedStateHandle["characterId"])
+    private val comicId: Int = checkNotNull(savedStateHandle["comicId"])
 
-    val comicsPaging = domain.comics(characterId).cachedIn(viewModelScope)
-    private val _uiState = MutableStateFlow<UiState<CharacterExternal>>(UiState())
+    val characters = domain.characters(comicId).cachedIn(viewModelScope)
+    private val _uiState = MutableStateFlow<UiState<Comic>>(UiState())
     val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            domain.character(characterId) { resultOf ->
+            domain.comic(comicId) { resultOf ->
                 when (resultOf) {
                     is ResultOf.Success -> {
                         _uiState.update {

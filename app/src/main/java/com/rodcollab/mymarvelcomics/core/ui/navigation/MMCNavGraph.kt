@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.rodcollab.mymarvelcomics.features.characters.characters
+import com.rodcollab.mymarvelcomics.features.comics.comics
 
 @Composable
 fun MMCNavGraph(
@@ -34,6 +35,7 @@ fun MMCNavGraph(
                 modifier = modifier
             ) {
                 characters(navController)
+                comics(navController)
             }
         }
 

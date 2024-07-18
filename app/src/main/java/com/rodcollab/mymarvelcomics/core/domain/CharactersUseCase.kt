@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 class CharactersUseCaseImpl (private val charactersRepository: CharactersRepository):
     CharactersUseCase {
     override fun invoke(): Flow<PagingData<CharacterExternal>> {
-        return charactersRepository.getCharacters(15).flow.map { it.map { it.toExternal(emptyList()) } }
+        return charactersRepository.getCharacters(15).flow.map { it.map { it.toExternal() } }
     }
 }
 

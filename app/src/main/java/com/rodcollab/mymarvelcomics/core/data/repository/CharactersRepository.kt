@@ -4,12 +4,9 @@ import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import com.rodcollab.mymarvelcomics.core.data.model.toComic
 import com.rodcollab.mymarvelcomics.core.data.model.toExternal
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
-import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
 import com.rodcollab.mymarvelcomics.core.model.CharacterExternal
 import com.rodcollab.mymarvelcomics.core.network.model.CharacterNetwork
@@ -18,41 +15,49 @@ import com.rodcollab.mymarvelcomics.core.network.service.MarvelApi
 import com.rodcollab.mymarvelcomics.core.utils.ResultOf
 import com.rodcollab.mymarvelcomics.core.utils.safeCallback
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
 interface CharactersRepository {
-    fun getCharacters(pageSize: Int) : Pager<Int,CharacterEntity>
+    fun getCharacters(pageSize: Int): Pager<Int, CharacterEntity>
 
-    suspend fun getCharacterDetails(characterId: Int, onResult: (ResultOf<CharacterExternal>) -> Unit)
+    suspend fun getCharacterDetails(
+        characterId: Int,
+        onResult: (ResultOf<CharacterExternal>) -> Unit,
+    )
+
+    fun getPagingCharsByComic(pageSize: Int, charId: Int): Pager<Int, CharacterEntity>
 }
 
 class CharactersRepositoryImpl @Inject constructor(
     private val transactionProvider: TransactionProvider,
     private val charactersDao: CharactersDao,
-    private val comicsDao: ComicsDao,
-    private val remoteService: MarvelApi
+    private val remoteService: MarvelApi,
 ) : CharactersRepository {
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getCharacters(pageSize: Int) = Pager(
         config = PagingConfig(pageSize = pageSize),
-        remoteMediator = CharactersRemoteMediator(transactionProvider,charactersDao,remoteService)
+        remoteMediator = CharactersRemoteMediator(
+            transactionProvider = transactionProvider,
+            charactersDao = charactersDao,
+            remoteService = remoteService
+        )
     ) {
         charactersDao.charactersPagingSource()
     }
 
-    override suspend fun getCharacterDetails(characterId: Int, onResult:(ResultOf<CharacterExternal>) -> Unit) {
+    override suspend fun getCharacterDetails(
+        characterId: Int,
+        onResult: (ResultOf<CharacterExternal>) -> Unit,
+    ) {
         val characterDetails = withContext(Dispatchers.IO) {
             charactersDao.characterById(characterId)
         }
         characterDetails?.let { characterExternal ->
-            val comics = characterExternal.comics?.map { comicId ->
-                comicsDao.comicById(comicId).toComic()
-            }
-            onResult(ResultOf.Success(characterExternal.toExternal(comics ?: emptyList())))
+
+            onResult(ResultOf.Success(characterExternal.toExternal()))
         } ?: run {
             safeCallback(
                 callback = {
@@ -66,6 +71,20 @@ class CharactersRepositoryImpl @Inject constructor(
         }
 
     }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getPagingCharsByComic(pageSize: Int, comicId: Int): Pager<Int, CharacterEntity> =
+        Pager(
+            config = PagingConfig(pageSize = pageSize),
+            remoteMediator = CharactersRemoteMediator(
+                comicId,
+                transactionProvider,
+                charactersDao,
+                remoteService
+            )
+        ) {
+            charactersDao.charactersPagingSource()
+        }
 
     private fun handleCharactersResponse(
         response: Response<ResponseContainer<CharacterNetwork>>,

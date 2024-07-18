@@ -1,4 +1,4 @@
-package com.rodcollab.mymarvelcomics.features.characters
+package com.rodcollab.mymarvelcomics.features.comics
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -37,21 +37,20 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterDetailsScreen(
-    uiState: UiState<CharacterExternal>,
-    comics: LazyPagingItems<Comic>,
-    toComic: (Int) -> Unit,
+fun ComicDetailsScreen(
+    uiState: UiState<Comic>,
+    characters: LazyPagingItems<CharacterExternal>,
     navigateUp: () -> Unit
 ) {
 
 
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = comics.loadState) {
-        if (comics.loadState.refresh is LoadState.Error) {
+    LaunchedEffect(key1 = characters.loadState) {
+        if (characters.loadState.refresh is LoadState.Error) {
             Toast.makeText(
                 context,
-                "Error: " + (comics.loadState.refresh as LoadState.Error).error.message,
+                "Error: " + (characters.loadState.refresh as LoadState.Error).error.message,
                 Toast.LENGTH_LONG
             ).show()
 
@@ -69,7 +68,7 @@ fun CharacterDetailsScreen(
                         Text(
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Light,
-                            text = "Character"
+                            text = "Comic"
                         )
                     }
                 })
@@ -93,29 +92,34 @@ fun CharacterDetailsScreen(
             ) {
                 CardContent(
                     id = uiState.model?.id ?: 0,
-                    title = uiState.model?.name ?: "",
-                    img = uiState.model?.thumbnail ?: ""
+                    title = uiState.model?.title ?: "",
+                    img = uiState.model?.urlImage ?: ""
                 ) {}
             }
 
             Text(
                 modifier = Modifier.padding(start = 16.dp, top = 8.dp),
+                color = Color.Black,
+                style = MaterialTheme.typography.headlineMedium,
+                text = uiState.model?.description ?: ""
+            )
+
+            Text(
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.headlineMedium,
-                text = "Comics".uppercase(
+                text = "characters".uppercase(
                     Locale.ROOT
                 )
             )
             LazyRowPaging(
-                modifier = Modifier, comics
+                modifier = Modifier, characters
             ) { character ->
                 CardContent(
                     id = character.id,
-                    title = character.title ?: "",
-                    img = character.urlImage,
-                    toDetails = { comicId ->
-                        toComic(comicId)
-                    })
+                    title = character.name ?: "",
+                    img = character.thumbnail,
+                    toDetails = { })
             }
         }
 

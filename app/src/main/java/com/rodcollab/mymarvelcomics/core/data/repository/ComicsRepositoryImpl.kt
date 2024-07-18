@@ -126,7 +126,7 @@ class ComicsRepositoryImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPagingComics(pageSize: Int, comicId: Int) = Pager(
+    override fun getPagingComics(pageSize: Int) = Pager(
         config = PagingConfig(pageSize = pageSize),
         remoteMediator = ComicsRemoteMediator(transactionProvider = transactionProvider, comicsDao = comicsDao, remoteService = remoteService)
     ) {
@@ -142,5 +142,22 @@ class ComicsRepositoryImpl @Inject constructor(
         remoteMediator = ComicsRemoteMediator(charId, transactionProvider, comicsDao, remoteService)
     ) {
         comicsDao.comicsPagingSource()
+    }
+
+    override suspend fun getComicDetails(comicId: Int, onResult:(ResultOf<Comic>) -> Unit) {
+        val comicDetails = withContext(Dispatchers.IO) {
+            comicsDao.comicById(comicId)
+        }
+        onResult(ResultOf.Success(comicDetails.toComic())) ?: run {
+            safeCallback(
+                callback = {
+                    remoteService.getComicDetails(comicId)
+                }, onResult = { resultOf ->
+                    when (resultOf) {
+                        is ResultOf.Failure -> onResult(resultOf)
+                        is ResultOf.Success -> handleComicResponse(resultOf.value, onResult)
+                    }
+                })
+        }
     }
 }

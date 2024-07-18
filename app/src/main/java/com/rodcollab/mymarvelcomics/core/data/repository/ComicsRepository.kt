@@ -14,9 +14,11 @@ interface ComicsRepository {
 
     suspend fun readComic(comicId: Int, onResult: (ResultOf<Comic>) -> Unit)
 
-    fun getPagingComics(pageSize: Int, comicId: Int) : Pager<Int, ComicEntity>
+    fun getPagingComics(pageSize: Int) : Pager<Int, ComicEntity>
 
     fun getPagingComicsByCharId(pageSize: Int, charId: Int) : Pager<Int, ComicEntity>
+
+    suspend fun getComicDetails(comicId: Int, onResult:(ResultOf<Comic>) -> Unit)
 
 
 }

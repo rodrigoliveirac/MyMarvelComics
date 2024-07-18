@@ -13,7 +13,7 @@ import com.rodcollab.mymarvelcomics.core.ui.navigation.MMCDestinations
 import com.rodcollab.mymarvelcomics.core.ui.navigation.MMCDestinationsArgs
 import com.rodcollab.mymarvelcomics.core.ui.navigation.MMCScreens
 
-fun NavGraphBuilder.characters(navController:NavController) {
+fun NavGraphBuilder.characters(navController: NavController) {
 
     composable(route = MMCDestinations.CHARACTERS_ROUTE) {
         val viewModel = hiltViewModel<CharactersViewModel>()
@@ -32,7 +32,9 @@ fun NavGraphBuilder.characters(navController:NavController) {
         val viewModel = hiltViewModel<CharacterDetailsViewModel>()
         val comics = viewModel.comicsPaging.collectAsLazyPagingItems()
         val characterDetails by viewModel.uiState.collectAsState()
-        CharacterDetailsScreen(characterDetails,comics) {
+        CharacterDetailsScreen(characterDetails, comics, toComic = { comicId ->
+            navController.navigate("${MMCScreens.COMIC_DETAILS_SCREEN}/$comicId")
+        }) {
             navController.navigateUp()
         }
     }

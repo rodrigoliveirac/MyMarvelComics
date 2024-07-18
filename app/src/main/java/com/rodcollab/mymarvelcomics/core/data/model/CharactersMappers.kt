@@ -24,11 +24,10 @@ fun CharacterNetwork.toEntity(comicIds:List<Int>? = null) =
         resourceURI = resourceURI
     )
 
-fun CharacterEntity.toExternal(comicIds:List<Comic>) =
+fun CharacterEntity.toExternal() =
     CharacterExternal(
         id = remoteId,
         name = name,
         description = description,
         thumbnail = thumbnail,
-        comics = comicIds
     )
