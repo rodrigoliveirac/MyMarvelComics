@@ -2,6 +2,7 @@ package com.rodcollab.mymarvelcomics.core.domain.di
 
 import com.rodcollab.mymarvelcomics.core.data.repository.CharactersRepository
 import com.rodcollab.mymarvelcomics.core.data.repository.ComicsRepository
+import com.rodcollab.mymarvelcomics.core.domain.AddOrRemoveFromFavoritesImpl
 import com.rodcollab.mymarvelcomics.core.domain.CharacterUseCase
 import com.rodcollab.mymarvelcomics.core.domain.CharacterUseCaseImpl
 import com.rodcollab.mymarvelcomics.core.domain.CharactersByComicUseCaseImpl
@@ -46,7 +47,8 @@ object DomainModule {
         return ComicDomain(
             characters = CharactersByComicUseCaseImpl(charactersRepository),
             comics = ComicsUseCaseImpl(comicsRepository),
-            comic = ComicUseCaseIml(comicsRepository)
+            comic = ComicUseCaseIml(comicsRepository),
+            addOrRemoveFromFavorites = AddOrRemoveFromFavoritesImpl(comicsRepository)
         )
     }
 }

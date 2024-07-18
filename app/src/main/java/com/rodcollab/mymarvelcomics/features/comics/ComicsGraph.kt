@@ -23,7 +23,16 @@ fun NavGraphBuilder.comics(navController: NavController) {
         val viewModel = hiltViewModel<ComicDetailsViewModel>()
         val characters = viewModel.characters.collectAsLazyPagingItems()
         val comicDetails by viewModel.uiState.collectAsState()
-        ComicDetailsScreen(comicDetails,characters) {
+        ComicDetailsScreen(onFavorite = {
+            viewModel.checkIfIsFavorite()
+        }, onCancel = {
+            viewModel.cancel()
+        },
+            onConfirm = {
+                viewModel.removeFromFavorites()
+            },
+            comicDetails, characters
+        ) {
             navController.navigateUp()
         }
     }

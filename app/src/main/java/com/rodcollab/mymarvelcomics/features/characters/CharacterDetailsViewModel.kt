@@ -17,13 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailsViewModel @Inject constructor(
-    domain: CharacterDomain,
+    private val domain: CharacterDomain,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val characterId: Int = checkNotNull(savedStateHandle["characterId"])
 
-    val comicsPaging = domain.comics(characterId).cachedIn(viewModelScope)
+    var comicsPaging = domain.comics(characterId).cachedIn(viewModelScope)
     private val _uiState = MutableStateFlow<UiState<CharacterExternal>>(UiState())
     val uiState = _uiState.asStateFlow()
 
@@ -45,6 +45,12 @@ class CharacterDetailsViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            comicsPaging = domain.comics(characterId).cachedIn(viewModelScope)
         }
     }
 

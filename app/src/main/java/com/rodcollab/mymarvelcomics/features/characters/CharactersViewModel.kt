@@ -8,9 +8,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CharactersViewModel @Inject constructor(domain: CharacterDomain) :
+class CharactersViewModel @Inject constructor(private val domain: CharacterDomain) :
     ViewModel() {
 
-    val data = domain.characters().cachedIn(viewModelScope)
+    var data = domain.characters().cachedIn(viewModelScope)
+    fun refresh() {
+        data =  domain.characters().cachedIn(viewModelScope)
+
+    }
+
 
 }

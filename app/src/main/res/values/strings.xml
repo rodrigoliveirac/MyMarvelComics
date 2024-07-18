@@ -5,4 +5,5 @@
     <string name="added_succesfully_to_your_favorites">added succesfully to your favorites</string>
     <string name="something_goes_wrong">something goes wrong</string>
     <string name="comics">comics</string>
+    <string name="will_remove_data_from_favorites">By continuing, you will remove this item from your favorites.</string>
 </resources>
