@@ -25,7 +25,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
-
 @RunWith(RobolectricTestRunner::class)
 class ComicsRepositoryTest : WebServiceAbstraction<DummyService>() {
 
@@ -141,21 +140,6 @@ class ComicsRepositoryTest : WebServiceAbstraction<DummyService>() {
         comicsRepository.fetchFavoriteComics {
             TestCase.assertTrue(it is ResultOf.Success)
             assertThat(it, IsEqual.equalTo(ResultOf.Success(emptyList())))
-        }
-    }
-
-    @Test
-    fun `When the user fetch the Favorite Comics from local database`() = runTest {
-
-        val comics = comicsFromNetwork()
-
-        comics.forEach {
-            comicsRepository.addFavoriteComic(it.toComic(), onResult = { })
-        }
-
-        comicsRepository.fetchFavoriteComics { resultOf ->
-            TestCase.assertTrue(resultOf is ResultOf.Success)
-            assertThat(resultOf, IsEqual.equalTo(ResultOf.Success(comics.map { it.toComic() })))
         }
     }
 

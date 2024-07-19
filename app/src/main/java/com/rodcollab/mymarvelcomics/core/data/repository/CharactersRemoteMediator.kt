@@ -1,25 +1,15 @@
 package com.rodcollab.mymarvelcomics.core.data.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.rodcollab.mymarvelcomics.core.data.model.toEntity
-import com.rodcollab.mymarvelcomics.core.database.AppDatabase
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
-import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
-import com.rodcollab.mymarvelcomics.core.network.model.CharacterNetwork
-import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
-import com.rodcollab.mymarvelcomics.core.network.model.ContentSummary
-import com.rodcollab.mymarvelcomics.core.network.model.ResponseContainer
 import com.rodcollab.mymarvelcomics.core.network.service.MarvelApi
-import com.rodcollab.mymarvelcomics.core.network.service.lastPath
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class CharactersRemoteMediator(
@@ -102,40 +92,4 @@ class CharactersRemoteMediator(
         }
     }
 
-    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): Map<Int, ComicEntity> {
-
-        val hmComics = hashMapOf<Int, ComicEntity>()
-
-        contentSummary.forEach { resourceList ->
-
-            val remoteId = resourceList.resourceURI.lastPath().toInt()
-
-            mapOf(remoteId to getItemFromService<ComicNetwork>(remoteId, resourceList))
-        }
-        return hmComics
-    }
-
-    private suspend fun <T> getItemFromService(
-        remoteId: Int,
-        resourceList: ContentSummary,
-    ): ComicEntity? {
-        val comicDetails = try {
-            remoteService.getComicDetails(
-                comicId = remoteId,
-            ).body()?.data?.results?.get(0)?.toEntity()
-        } catch (e: Exception) {
-            ComicNetwork(
-                title = resourceList.name,
-                resourceURI = resourceList.resourceURI,
-                id = remoteId,
-                collections = null,
-                description = null,
-                pageCount = null,
-                characters = null,
-                thumbnail = null,
-                images = null
-            ).toEntity()
-        }
-        return comicDetails
-    }
 }

@@ -8,6 +8,7 @@ import com.rodcollab.mymarvelcomics.core.network.ApiResponseWrapper
 import com.rodcollab.mymarvelcomics.core.utils.StatusCode
 import com.rodcollab.mymarvelcomics.core.utils.getOkHttpClient
 import kotlinx.coroutines.test.runTest
+import okhttp3.OkHttpClient
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.Assert
@@ -22,6 +23,7 @@ class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
 
     private lateinit var marvelService: DummyService
     private lateinit var context: Context
+    private lateinit var okHttpClient: OkHttpClient
 
     @Before
     fun setup() = runTest {
@@ -65,7 +67,7 @@ class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
     @Test
     fun `When Interceptor received an unauthorized response`() = runTest {
 
-        val client = getOkHttpClient(
+        okHttpClient = getOkHttpClient(
             interceptor =
             MockInterceptor(
                 code = StatusCode.UNAUTHORIZED.code,
@@ -74,7 +76,7 @@ class MockMarvelApiTest : WebServiceAbstraction<DummyService>() {
             )
         )
 
-        val result = createService(DummyService::class.java, client)
+        val result = createService(DummyService::class.java, okHttpClient)
 
         marvelService = result
 

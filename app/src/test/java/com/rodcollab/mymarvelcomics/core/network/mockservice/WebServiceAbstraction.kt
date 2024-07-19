@@ -8,9 +8,12 @@ import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@RunWith(RobolectricTestRunner::class)
 abstract class WebServiceAbstraction<T> {
 
     private lateinit var mockWebServer: MockWebServer
@@ -18,8 +21,8 @@ abstract class WebServiceAbstraction<T> {
 
     @Before
     fun mockServer() {
-        context = ApplicationProvider.getApplicationContext()
         mockWebServer = MockWebServer()
+        context = ApplicationProvider.getApplicationContext()
         mockWebServer.start()
     }
 
@@ -29,9 +32,7 @@ abstract class WebServiceAbstraction<T> {
     }
 
     suspend fun createService(clazz: Class<T>, client: OkHttpClient): T {
-
         return withContext(Dispatchers.IO) {
-
             Retrofit.Builder()
                 .baseUrl(mockWebServer.url("/"))
                 .addConverterFactory(GsonConverterFactory.create())
