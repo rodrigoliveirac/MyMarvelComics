@@ -62,6 +62,7 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.roboeletric)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -88,6 +89,8 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.androidx.material)
 
+    testImplementation(libs.okhttp.interceptor)
+    testImplementation(libs.okhttp)
     implementation(libs.coil.compose)
 
     implementation(libs.dagger.hilt)

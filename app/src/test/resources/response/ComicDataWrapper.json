@@ -11,17 +11,9 @@
         "title": "Marvel Previews (2017)",
         "description": "",
         "pageCount": 112,
-        "resourceURI": "http://gateway.marvel.com/v1/public/comics/82967",
-        "collections": [],
         "thumbnail": {
           "path": "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
           "extension": "jpg"
-        },
-        "images": [],
-        "characters": {
-          "available": 0,
-          "collectionURI": "http://gateway.marvel.com/v1/public/comics/82967/characters",
-          "items": []
         }
       },
       {
@@ -30,12 +22,10 @@
         "description": "",
         "pageCount": 152,
         "resourceURI": "http://gateway.marvel.com/v1/public/comics/82965",
-        "collections": [],
         "thumbnail": {
           "path": "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available",
           "extension": "jpg"
         },
-        "images": [],
         "characters": {
           "available": 0,
           "collectionURI": "http://gateway.marvel.com/v1/public/comics/82965/characters",
@@ -53,12 +43,6 @@
           "path": "http://i.annihil.us/u/prod/marvel/i/mg/c/80/5e3d7536c8ada",
           "extension": "jpg"
         },
-        "images": [
-          {
-            "path": "http://i.annihil.us/u/prod/marvel/i/mg/c/80/5e3d7536c8ada",
-            "extension": "jpg"
-          }
-        ],
         "characters": {
           "available": 0,
           "collectionURI": "http://gateway.marvel.com/v1/public/comics/82970/characters",

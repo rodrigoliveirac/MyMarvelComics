@@ -1,11 +1,13 @@
 package com.rodcollab.mymarvelcomics.core.data
 
 import android.util.Log
+import androidx.paging.Pager
 import com.rodcollab.mymarvelcomics.R
 import com.rodcollab.mymarvelcomics.core.data.model.toComic
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.data.repository.ComicsRepository
 import com.rodcollab.mymarvelcomics.core.database.FakeComicsDao
+import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
 import com.rodcollab.mymarvelcomics.core.model.Comic
 import com.rodcollab.mymarvelcomics.core.network.mockservice.DummyService
 import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
@@ -77,4 +79,21 @@ class FakeComicsRepository(
             R.string.deleted_successfully_from_your_favorites
         }, onResult)
     }
+
+    override suspend fun readComic(comicId: Int, onResult: (ResultOf<Comic>) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPagingComics(pageSize: Int): Pager<Int, ComicEntity> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPagingComicsByCharId(pageSize: Int, charId: Int): Pager<Int, ComicEntity> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getComicDetails(comicId: Int, onResult: (ResultOf<Comic>) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
 }

@@ -83,4 +83,20 @@ class FakeMarvelApi : MarvelApi {
     ): Response<ResponseContainer<CharacterNetwork>> {
         return Response.success(200,model.findCharacters(limit, offset))
     }
+
+    override suspend fun getComicsByChar(
+        characterId: Int,
+        limit: Int,
+        offset: Int,
+    ): Response<ResponseContainer<ComicNetwork>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getCharactersByComicId(
+        comicId: Int,
+        limit: Int,
+        offset: Int,
+    ): Response<ResponseContainer<CharacterNetwork>> {
+        TODO("Not yet implemented")
+    }
 }

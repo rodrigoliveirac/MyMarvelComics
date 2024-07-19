@@ -15,8 +15,8 @@ composeBom = "2023.08.00"
 retrofit = "2.9.0"
 gson = "2.8.2"
 kotlinxCoroutinesTest = "1.8.1-Beta"
-okhttp = "4.12.0"
-mockwebserver = "3.12.0"
+okhttp = "4.0.0"
+mockwebserver = "4.0.0"
 testCore = "1.6.1"
 coreKtxVersion = "1.6.1"
 roboeletric = "4.12"
@@ -28,6 +28,7 @@ pagingCompose = "1.0.0-alpha18"
 hiltNavCompose = "1.2.0"
 navigation = "2.7.7"
 coroutinesCore = "1.9.0-RC"
+junitKtx = "1.2.1"
 
 [libraries]
 roboeletric = { group = "org.robolectric", name = "robolectric", version.ref = "roboeletric"}
@@ -63,6 +64,7 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 okhttp-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp"}
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver"}
 test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp",version.ref = "okhttp"}
 
 dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltCompiler"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltCompiler"}
@@ -74,6 +76,7 @@ room-paging = { group = "androidx.room", name = "room-paging", version.ref = "ro
 
 paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "pagingRuntime"}
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose"}
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
