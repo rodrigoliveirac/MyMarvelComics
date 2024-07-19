@@ -46,9 +46,6 @@ fun NavGraphBuilder.characters(navController: NavController) {
         val comics = viewModel.comicsPaging.collectAsLazyPagingItems()
         val characterDetails by viewModel.uiState.collectAsState()
         CharacterDetailsScreen(
-            onRefresh = {
-                viewModel.refresh()
-            },
             characterDetails, comics, toComic = { comicId ->
             navController.navigate("${MMCScreens.COMIC_DETAILS_SCREEN}/$comicId")
         }) {

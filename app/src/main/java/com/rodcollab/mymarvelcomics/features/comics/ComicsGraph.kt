@@ -21,6 +21,7 @@ fun NavGraphBuilder.comics(navController: NavController) {
         val dropDownMenu by viewModel.dropDownMenu.collectAsState()
         val favorites by viewModel.favorites.collectAsState()
         ComicsScreen(
+            onRefresh = { viewModel.refresh() },
             dropDownExpanded = dropDownMenu.expanded,
             expandedDropdownMenu = {
              viewModel.expandedDropdownMenu()
@@ -33,10 +34,7 @@ fun NavGraphBuilder.comics(navController: NavController) {
                 navController.navigate(route)
             },
             favorites = favorites.model ?: emptyList(),
-            comics = comics,
-            onRefresh = {
-                viewModel.refresh()
-            }) { comicId ->
+            comics = comics) { comicId ->
             navController.navigate("${MMCScreens.COMIC_DETAILS_SCREEN}/$comicId")
         }
     }

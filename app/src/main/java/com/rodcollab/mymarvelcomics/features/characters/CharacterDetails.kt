@@ -40,7 +40,6 @@ import com.rodcollab.mymarvelcomics.core.ui.components.LazyRowPaging
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailsScreen(
-    onRefresh: () -> Unit,
     uiState: UiState<CharacterExternal>,
     comics: LazyPagingItems<Comic>,
     toComic: (Int) -> Unit,
@@ -58,12 +57,6 @@ fun CharacterDetailsScreen(
                 Toast.LENGTH_LONG
             ).show()
 
-        }
-    }
-
-    DisposableEffect(key1 = Unit) {
-        onDispose {
-            onRefresh()
         }
     }
 

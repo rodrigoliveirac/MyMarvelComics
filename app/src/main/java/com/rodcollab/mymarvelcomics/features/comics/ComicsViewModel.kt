@@ -1,5 +1,6 @@
 package com.rodcollab.mymarvelcomics.features.comics
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -11,7 +12,6 @@ import com.rodcollab.mymarvelcomics.core.utils.ResultOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,34 +39,7 @@ data class Options<T>(
 class ComicsViewModel @Inject constructor(private val domain: ComicDomain) :
     ViewModel() {
 
-    private var _allComics = domain.comics().cachedIn(viewModelScope)
-    val allComics = _allComics
-    fun refresh() {
-        when (_dropDownMenu.value.selectedItem.model) {
-            ComicsSession.FAVORITES -> {
-                viewModelScope.launch {
-                    domain.favorites { resultOf ->
-                        when (resultOf) {
-                            is ResultOf.Success -> {
-                                _favorites.update {
-                                    it.copy(model = resultOf.value)
-                                }
-                                _allComics = _allComics.cancellable()
-                            }
-
-                            else -> {
-
-                            }
-                        }
-                    }
-                }
-            }
-
-            else -> {
-                _allComics = domain.comics().cachedIn(viewModelScope)
-            }
-        }
-    }
+    var allComics = domain.comics().cachedIn(viewModelScope)
 
     private val _favorites = MutableStateFlow<UiState<List<Comic>>>(UiState())
     val favorites = _favorites.asStateFlow()
@@ -89,64 +62,83 @@ class ComicsViewModel @Inject constructor(private val domain: ComicDomain) :
 
     val dropDownMenu = _dropDownMenu.asStateFlow()
 
+    fun refresh() {
+        viewModelScope.launch {
+            fetchFavorites(
+                withResult = {
+                    updateSession(it)
+                },
+                withError =  {
+                    Log.d("COMICS_VIEWMODEL", it)
+                }
+            )
+        }
+    }
+
     fun switchSession(sessionSelected: ComicsSession) {
         viewModelScope.launch {
             if (sessionSelected != _dropDownMenu.value.selectedItem.model) {
                 when (sessionSelected) {
                     ComicsSession.FAVORITES -> {
-                        domain.favorites { resultOf ->
-                            when (resultOf) {
-                                is ResultOf.Success -> {
-                                    _favorites.update {
-                                        it.copy(model = resultOf.value)
-                                    }
-                                    val options = _dropDownMenu.value.items.map {
-                                        if (it.model == sessionSelected) {
-                                            it.copy(isSelected = true)
-                                        } else {
-                                            it.copy(isSelected = false)
-                                        }
-                                    }
-                                    _dropDownMenu.update {
-                                        it.copy(
-                                            expanded = !it.expanded,
-                                            items = options,
-                                            selectedItem = it.selectedItem.copy(sessionSelected)
-                                        )
-                                    }
-                                    _allComics = _allComics.cancellable()
-                                }
-
-                                else -> {
-
-                                }
+                        fetchFavorites(
+                            withResult = {
+                                val uiOptionsUpdated = uiOptionsUpdated(sessionSelected)
+                                updateDropDownMenu(uiOptionsUpdated,sessionSelected)
+                            },
+                            withError = {
+                                Log.d("COMICS_VIEWMODEL",it)
                             }
-                        }
+                        )
                     }
 
                     else -> {
-                        _favorites.update {
-                            it.copy(model = emptyList())
-                        }
-                        _allComics = domain.comics().cachedIn(viewModelScope)
-                        val options = _dropDownMenu.value.items.map {
-                            if (it.model == sessionSelected) {
-                                it.copy(isSelected = true)
-                            } else {
-                                it.copy(isSelected = false)
-                            }
-                        }
-                        _dropDownMenu.update {
-                            it.copy(
-                                expanded = !it.expanded,
-                                items = options,
-                                selectedItem = it.selectedItem.copy(sessionSelected)
-                            )
-                        }
+                        val options = uiOptionsUpdated(sessionSelected)
+                        updateDropDownMenu(options, sessionSelected)
                     }
                 }
 
             }
+        }
+    }
+
+    private suspend fun fetchFavorites(withResult: (List<Comic>)-> Unit, withError:(String)-> Unit) {
+        domain.favorites { resultOf ->
+            when (resultOf) {
+                is ResultOf.Success -> {
+                    withResult(resultOf.value)
+                }
+                is ResultOf.Failure -> {
+                    withError(resultOf.message.toString())
+                }
+            }
+        }
+    }
+
+    private fun updateDropDownMenu(
+        options: List<UiOption<ComicsSession>>,
+        sessionSelected: ComicsSession,
+    ) {
+        _dropDownMenu.update {
+            it.copy(
+                expanded = !it.expanded,
+                items = options,
+                selectedItem = it.selectedItem.copy(sessionSelected)
+            )
+        }
+    }
+
+    private fun uiOptionsUpdated(sessionSelected: ComicsSession) =
+        _dropDownMenu.value.items.map {
+            if (it.model == sessionSelected) {
+                it.copy(isSelected = true)
+            } else {
+                it.copy(isSelected = false)
+            }
+        }
+
+    private fun updateSession(comics: List<Comic>) {
+        _favorites.update {
+            it.copy(model = comics)
         }
     }
 

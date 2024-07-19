@@ -59,7 +59,7 @@ internal fun <T : Any> LazyRowPaging(
 ) {
     Box(modifier = modifier) {
         if (items.loadState.refresh is LoadState.Loading) {
-            LoadingWithDeadPool(modifier = Modifier.align(Alignment.Center))
+            LoadingWithDeadPool(modifier = modifier)
         } else {
             LazyRow(
                 contentPadding = PaddingValues(8.dp),

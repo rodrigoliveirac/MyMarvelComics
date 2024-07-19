@@ -9,11 +9,15 @@ import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
+import com.rodcollab.mymarvelcomics.core.network.ResponseError
 import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
 import com.rodcollab.mymarvelcomics.core.network.model.ContentSummary
 import com.rodcollab.mymarvelcomics.core.network.service.MarvelApi
 import com.rodcollab.mymarvelcomics.core.network.service.lastPath
+import okhttp3.CacheControl
+import okhttp3.Interceptor
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
@@ -60,12 +64,8 @@ class ComicsRemoteMediator(
                     limit = state.config.pageSize,
                 )
             } else {
-                remoteService.getComics(
-                    offset = offset,
-                    limit = state.config.pageSize,
-                )
+                remoteService.getComics(offset = offset, limit = state.config.pageSize)
             }
-
 
             val comics = response.body()?.data?.results?.map { comicNetwork ->
 

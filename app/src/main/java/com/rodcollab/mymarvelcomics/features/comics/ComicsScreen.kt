@@ -69,11 +69,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ComicsScreen(
+    onRefresh:()-> Unit,
     dropDownExpanded: Boolean,
     expandedDropdownMenu: () -> Unit,
     toFilter: (ComicsSession) -> Unit,
     toCharacters: (String) -> Unit,
-    onRefresh: () -> Unit,
     uiOptions: Options<UiOption<ComicsSession>>,
     favorites: List<Comic>,
     comics: LazyPagingItems<Comic>,
@@ -81,7 +81,6 @@ fun ComicsScreen(
 ) {
 
     val sheetState = rememberModalBottomSheetState()
-
     var errorFromPaging by rememberSaveable {
         mutableStateOf(false)
     }
@@ -92,11 +91,9 @@ fun ComicsScreen(
     }
 
     DisposableEffect(key1 = Unit) {
-        onDispose {
-            onRefresh()
-        }
+        onRefresh()
+        onDispose {  }
     }
-
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
@@ -223,7 +220,7 @@ fun ComicsScreen(
                     ) { comic ->
                         comic?.let {
                             CardContent(
-                                hideHeart = !comic.isFavorite,
+                                hideHeart = true,
                                 isFavorite = comic.isFavorite,
                                 id = comic.id,
                                 title = comic.title ?: "",
@@ -252,7 +249,7 @@ fun ComicsScreen(
                                     .aspectRatio(0.8f),
                             ) {
                                 CardContent(
-                                    hideHeart = !comic.isFavorite,
+                                    hideHeart = true,
                                     isFavorite = comic.isFavorite,
                                     id = comic.id,
                                     title = comic.title ?: "",

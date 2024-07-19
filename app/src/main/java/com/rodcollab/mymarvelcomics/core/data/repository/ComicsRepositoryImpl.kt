@@ -145,19 +145,20 @@ class ComicsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getComicDetails(comicId: Int, onResult: (ResultOf<Comic>) -> Unit) {
-        val comicDetails = withContext(Dispatchers.IO) {
-            comicsDao.comicById(comicId)
+        withContext(Dispatchers.IO) {
+            val comic = comicsDao.comicById(comicId)
+            onResult(ResultOf.Success(comic.toComic())) ?: run {
+                safeCallback(
+                    callback = {
+                        remoteService.getComicDetails(comicId)
+                    }, onResult = { resultOf ->
+                        when (resultOf) {
+                            is ResultOf.Failure -> onResult(resultOf)
+                            is ResultOf.Success -> handleComicResponse(resultOf.value, onResult)
+                        }
+                    })
+            }
         }
-        onResult(ResultOf.Success(comicDetails.toComic())) ?: run {
-            safeCallback(
-                callback = {
-                    remoteService.getComicDetails(comicId)
-                }, onResult = { resultOf ->
-                    when (resultOf) {
-                        is ResultOf.Failure -> onResult(resultOf)
-                        is ResultOf.Success -> handleComicResponse(resultOf.value, onResult)
-                    }
-                })
-        }
+
     }
 }
