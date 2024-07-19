@@ -1,10 +1,9 @@
 package com.rodcollab.mymarvelcomics.core.data.repository
 
-import androidx.paging.PagingData
+import androidx.paging.Pager
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
 import com.rodcollab.mymarvelcomics.core.utils.ResultOf
 import com.rodcollab.mymarvelcomics.core.model.Comic
-import kotlinx.coroutines.flow.Flow
 
 interface ComicsRepository {
     suspend fun fetchComics(onResult: (ResultOf<List<Comic>>) -> Unit)
@@ -15,5 +14,11 @@ interface ComicsRepository {
 
     suspend fun readComic(comicId: Int, onResult: (ResultOf<Comic>) -> Unit)
 
-    fun getPagingComics(pageSize: Int, comicId: Int) : Flow<PagingData<ComicEntity>>
+    fun getPagingComics(pageSize: Int) : Pager<Int, ComicEntity>
+
+    fun getPagingComicsByCharId(pageSize: Int, charId: Int) : Pager<Int, ComicEntity>
+
+    suspend fun getComicDetails(comicId: Int, onResult:(ResultOf<Comic>) -> Unit)
+
+
 }

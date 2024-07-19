@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.rodcollab.mymarvelcomics"
-        minSdk = 34
+        minSdk = 33
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -33,7 +33,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -65,7 +65,6 @@ dependencies {
     testImplementation(libs.roboeletric)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -87,6 +86,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.gson)
+    implementation(libs.androidx.material)
+
+    implementation(libs.coil.compose)
 
     implementation(libs.dagger.hilt)
     ksp(libs.hilt.compiler)
@@ -98,5 +100,11 @@ dependencies {
 
     implementation(libs.paging.runtime)
     implementation(libs.paging.compose)
+
+    implementation(libs.navigation.compose)
+    implementation(libs.navigation.compose.hilt)
+
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
 }

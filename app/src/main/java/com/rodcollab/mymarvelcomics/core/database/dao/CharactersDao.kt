@@ -12,10 +12,10 @@ interface CharactersDao {
     @Insert
     suspend fun upsertAll(characters: List<CharacterEntity>)
 
-    @Query("SELECT * FROM characters ORDER BY id ASC")
+    @Query("SELECT * FROM characters ORDER BY character_name")
     fun charactersPagingSource(): PagingSource<Int, CharacterEntity>
 
-    @Query("SELECT * FROM characters WHERE character_remoteId =:characterId")
+    @Query("SELECT * FROM characters WHERE id =:characterId")
     fun characterById(characterId: Int): CharacterEntity?
 
     @Query("DELETE FROM characters")

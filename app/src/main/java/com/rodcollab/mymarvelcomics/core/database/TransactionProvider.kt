@@ -1,8 +1,9 @@
 package com.rodcollab.mymarvelcomics.core.database
 
 import androidx.room.withTransaction
+import javax.inject.Inject
 
-class DefaultTransactionProvider(
+class DefaultTransactionProvider @Inject constructor(
     private val db: AppDatabase,
 ) : TransactionProvider {
     override suspend fun <R> runAsTransaction(block: suspend () -> R): R {

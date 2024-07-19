@@ -9,7 +9,6 @@ import com.rodcollab.mymarvelcomics.core.utils.ResultOf
 import com.rodcollab.mymarvelcomics.core.data.model.toComic
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
-import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
 import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
 import com.rodcollab.mymarvelcomics.core.database.dao.FavoriteComicsDao
 import com.rodcollab.mymarvelcomics.core.model.Comic
@@ -20,10 +19,10 @@ import com.rodcollab.mymarvelcomics.core.utils.safeCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import javax.inject.Inject
 
-class ComicsRepositoryImpl(
+class ComicsRepositoryImpl @Inject constructor(
     private val transactionProvider: TransactionProvider,
-    private val charactersDao: CharactersDao,
     private val comicsDao: ComicsDao,
     private val favoritesDao: FavoriteComicsDao,
     private val remoteService: MarvelApi,
@@ -127,10 +126,39 @@ class ComicsRepositoryImpl(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPagingComics(pageSize: Int, comicId: Int) = Pager(
+    override fun getPagingComics(pageSize: Int) = Pager(
         config = PagingConfig(pageSize = pageSize),
-        remoteMediator = ComicsRemoteMediator(transactionProvider,charactersDao, comicsDao, remoteService)
+        remoteMediator = ComicsRemoteMediator(transactionProvider = transactionProvider, comicsDao = comicsDao, remoteService = remoteService)
     ) {
         comicsDao.comicsPagingSource()
-    }.flow
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getPagingComicsByCharId(
+        pageSize: Int,
+        charId: Int,
+    ) = Pager(
+        config = PagingConfig(pageSize = pageSize),
+        remoteMediator = ComicsRemoteMediator(charId, transactionProvider, comicsDao, remoteService)
+    ) {
+        comicsDao.comicsPagingSource()
+    }
+
+    override suspend fun getComicDetails(comicId: Int, onResult: (ResultOf<Comic>) -> Unit) {
+        withContext(Dispatchers.IO) {
+            val comic = comicsDao.comicById(comicId)
+            onResult(ResultOf.Success(comic.toComic())) ?: run {
+                safeCallback(
+                    callback = {
+                        remoteService.getComicDetails(comicId)
+                    }, onResult = { resultOf ->
+                        when (resultOf) {
+                            is ResultOf.Failure -> onResult(resultOf)
+                            is ResultOf.Success -> handleComicResponse(resultOf.value, onResult)
+                        }
+                    })
+            }
+        }
+
+    }
 }

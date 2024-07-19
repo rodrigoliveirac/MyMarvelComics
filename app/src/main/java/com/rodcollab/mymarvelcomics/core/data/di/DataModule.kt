@@ -1,5 +1,7 @@
 package com.rodcollab.mymarvelcomics.core.data.di
 
+import com.rodcollab.mymarvelcomics.core.data.repository.CharactersRepository
+import com.rodcollab.mymarvelcomics.core.data.repository.CharactersRepositoryImpl
 import com.rodcollab.mymarvelcomics.core.data.repository.ComicsRepository
 import com.rodcollab.mymarvelcomics.core.data.repository.ComicsRepositoryImpl
 import dagger.Binds
@@ -15,5 +17,8 @@ internal abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun providesComicsRepository(impl: ComicsRepositoryImpl): ComicsRepository
+    @Singleton
+    @Binds
+    abstract fun providesCharactersRepository(impl: CharactersRepositoryImpl): CharactersRepository
 
 }
