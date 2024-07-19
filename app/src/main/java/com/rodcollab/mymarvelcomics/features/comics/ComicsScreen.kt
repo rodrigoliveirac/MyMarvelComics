@@ -92,8 +92,9 @@ fun ComicsScreen(
     }
 
     DisposableEffect(key1 = Unit) {
-        onRefresh()
-        onDispose {}
+        onDispose {
+            onRefresh()
+        }
     }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -310,7 +311,7 @@ fun ComicsScreen(
                         elevation = ButtonDefaults.buttonElevation(4.dp),
                         onClick = {
                             errorFromPaging = false
-                            comics.retry()
+                            comics.refresh()
                         }
                     ) {
                         Text(

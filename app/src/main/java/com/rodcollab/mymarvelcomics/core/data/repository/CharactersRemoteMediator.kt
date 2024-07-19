@@ -6,6 +6,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.rodcollab.mymarvelcomics.core.data.model.toEntity
+import com.rodcollab.mymarvelcomics.core.database.AppDatabase
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.CharactersDao
 import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
@@ -18,6 +19,7 @@ import com.rodcollab.mymarvelcomics.core.network.service.MarvelApi
 import com.rodcollab.mymarvelcomics.core.network.service.lastPath
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class CharactersRemoteMediator(
@@ -65,19 +67,10 @@ class CharactersRemoteMediator(
                     limit = state.config.pageSize,
                 )
             } else {
-                val response = try {
-                    remoteService.getCharacters(
-                        offset = loadKey,
-                        limit = state.config.pageSize,
-                    )
-                } catch(e: Exception) {
-                    Log.d("NETWORK_FETCH_CHARACTERS", e.toString())
-                    remoteService.getCharacters(
-                        offset = loadKey,
-                        limit = state.config.pageSize,
-                    )
-                }
-                response
+                remoteService.getCharacters(
+                    offset = loadKey,
+                    limit = state.config.pageSize,
+                )
             }
 
 

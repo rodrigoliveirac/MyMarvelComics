@@ -122,7 +122,7 @@ fun CharacterDetailsScreen(
                 text = "Comics"
             )
             LazyRowPaging(
-                modifier = Modifier, comics
+                modifier = Modifier.align(Alignment.CenterHorizontally), comics
             ) { comic ->
                 comic?.let {
                     CardContent(

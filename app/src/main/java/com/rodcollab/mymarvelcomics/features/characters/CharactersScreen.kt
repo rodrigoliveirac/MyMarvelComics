@@ -75,8 +75,9 @@ fun CharactersScreen(
     }
 
     DisposableEffect(key1 = Unit) {
-        onRefresh()
-        onDispose {}
+        onDispose {
+            onRefresh()
+        }
     }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)

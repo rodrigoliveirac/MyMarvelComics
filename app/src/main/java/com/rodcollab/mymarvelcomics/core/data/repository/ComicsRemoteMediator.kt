@@ -95,37 +95,4 @@ class ComicsRemoteMediator(
             return MediatorResult.Error(e)
         }
     }
-
-    private suspend fun getEntitiesFromContentSummary(contentSummary: List<ContentSummary>): Map<Int, CharacterEntity> {
-
-        val hmComics = hashMapOf<Int, CharacterEntity>()
-
-        contentSummary.forEach { resourceList ->
-
-            val remoteId = resourceList.resourceURI.lastPath().toInt()
-
-            mapOf(remoteId to getItemFromService<ComicNetwork>(remoteId, resourceList))
-        }
-        return hmComics
-    }
-
-    private suspend fun <T> getItemFromService(
-        remoteId: Int,
-        resourceList: ContentSummary,
-    ): CharacterEntity? {
-        val characterDetails = try {
-            remoteService.getCharacterDetails(
-                characterId = remoteId,
-            ).body()?.data?.results?.get(0)?.toEntity()
-        } catch (e: Exception) {
-            CharacterEntity(
-                id = remoteId,
-                name = resourceList.name,
-                resourceURI = resourceList.resourceURI,
-                description = null,
-                thumbnail = null,
-            )
-        }
-        return characterDetails
-    }
 }
