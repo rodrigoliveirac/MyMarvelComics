@@ -106,7 +106,7 @@ fun CharactersScreen(
                     selected = false,
                     onClick = {
                         scope.launch {
-                            sheetState.hide()
+                            drawerState.close()
                         }
                     }
                 )
@@ -158,14 +158,19 @@ fun CharactersScreen(
                     .fillMaxSize()
                     .padding(paddingValues), characters
             ) { character ->
-                CardContent(
-                    hideHeart = true,
-                    isFavorite = false,
-                    id = character.id,
-                    title = character.name,
-                    img = character.thumbnail,
-                    toDetails = toDetails
-                )
+                character?.let {
+                    CardContent(
+                        hideHeart = true,
+                        isFavorite = false,
+                        id = character.id,
+                        title = character.name,
+                        img = character.thumbnail,
+                        toDetails = toDetails
+                    )
+                } ?: run {
+                    characters.retry()
+                }
+
             }
         }
 
@@ -177,6 +182,9 @@ fun CharactersScreen(
                 .fillMaxHeight(0.5f)
                 .fillMaxWidth(),
             onDismissRequest = {
+                scope.launch {
+                    sheetState.partialExpand()
+                }
             },
             sheetState = sheetState
         ) {

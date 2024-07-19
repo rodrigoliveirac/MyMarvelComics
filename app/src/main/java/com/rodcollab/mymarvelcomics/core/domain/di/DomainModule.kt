@@ -11,6 +11,7 @@ import com.rodcollab.mymarvelcomics.core.domain.CharactersUseCaseImpl
 import com.rodcollab.mymarvelcomics.core.domain.ComicDomain
 import com.rodcollab.mymarvelcomics.core.domain.ComicUseCaseIml
 import com.rodcollab.mymarvelcomics.core.domain.ComicsUseCaseImpl
+import com.rodcollab.mymarvelcomics.core.domain.FavoriteComicsImpl
 import com.rodcollab.mymarvelcomics.core.domain.GetComicsByCharId
 import com.rodcollab.mymarvelcomics.core.domain.GetComicsByCharIdImpl
 import dagger.Module
@@ -48,7 +49,8 @@ object DomainModule {
             characters = CharactersByComicUseCaseImpl(charactersRepository),
             comics = ComicsUseCaseImpl(comicsRepository),
             comic = ComicUseCaseIml(comicsRepository),
-            addOrRemoveFromFavorites = AddOrRemoveFromFavoritesImpl(comicsRepository)
+            addOrRemoveFromFavorites = AddOrRemoveFromFavoritesImpl(comicsRepository),
+            favorites = FavoriteComicsImpl(comicsRepository)
         )
     }
 }

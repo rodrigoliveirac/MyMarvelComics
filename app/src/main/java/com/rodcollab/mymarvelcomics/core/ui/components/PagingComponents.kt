@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
@@ -52,7 +55,7 @@ import com.rodcollab.mymarvelcomics.theme.ColorApp
 internal fun <T : Any> LazyRowPaging(
     modifier: Modifier,
     items: LazyPagingItems<T>,
-    content: @Composable ColumnScope.(T) -> Unit,
+    content: @Composable ColumnScope.(T?) -> Unit,
 ) {
     Box(modifier = modifier) {
         if (items.loadState.refresh is LoadState.Loading) {
@@ -64,7 +67,7 @@ internal fun <T : Any> LazyRowPaging(
                     .fillMaxWidth()
             ) {
                 items(count = items.itemCount) { index ->
-                    val item = items[index] as T
+                    val item = items[index] as T?
                     CardScaffold(
                         Modifier
                             .clip(RoundedCornerShape(4.dp))
@@ -81,7 +84,7 @@ internal fun <T : Any> LazyRowPaging(
 internal fun <T : Any> LazyVerticalGridPaging(
     modifier: Modifier,
     items: LazyPagingItems<T>,
-    content: @Composable ColumnScope.(T) -> Unit,
+    content: @Composable ColumnScope.(T?) -> Unit,
 ) {
     Box(modifier = modifier) {
         if (items.loadState.refresh is LoadState.Loading) {
@@ -95,7 +98,7 @@ internal fun <T : Any> LazyVerticalGridPaging(
                     .fillMaxSize()
             ) {
                 items(count = items.itemCount) { index ->
-                    val item = items[index] as T
+                    val item = items[index] as T?
                     CardScaffold(
                         Modifier
                             .clip(RoundedCornerShape(4.dp))
@@ -142,19 +145,46 @@ internal fun CardContent(
     var componentHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
     Box(modifier = modifier.clickable { toDetails(id) }) {
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = componentHeight + 5.dp)
-                .clip(
-                    RoundedCornerShape(12.dp)
-                ),
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(img)
-                .build(),
-            contentScale = ContentScale.FillBounds,
-            contentDescription = null,
-        )
+        Box {
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = componentHeight + 5.dp)
+                    .clip(
+                        RoundedCornerShape(12.dp)
+                    ),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(img)
+                    .build(),
+                contentScale = ContentScale.FillBounds,
+                contentDescription = null,
+            )
+            if(!hideHeart) {
+                Button(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                        .size(36.dp)
+                        .zIndex(1f)
+                        .background(
+                            shape = RoundedCornerShape(36.dp),
+                            brush = Brush.verticalGradient(
+                                colorStops = arrayOf(
+                                    0.0f to Color.Transparent,
+                                    0.0f to Color.White,
+                                    1f to Color.LightGray
+                                )
+                            )
+                        ).clip(RoundedCornerShape(36.dp)),
+                    shape = CircleShape,
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                    onClick = { onFavorite() }) {
+                    Icon(tint = ColorApp.favorite, painter = painterResource(id = if(isFavorite)  R.drawable.ic_favorite else  R.drawable.ic_unfavorite), contentDescription = null)
+                }
+            }
+        }
+
         Text(
             style = MaterialTheme.typography.titleMedium,
             color = Color.Black,
@@ -183,11 +213,7 @@ internal fun CardContent(
             text = title ?: "",
             maxLines = 1
         )
-        if(!hideHeart) {
-            IconButton(modifier = Modifier.align(Alignment.BottomEnd), onClick = { onFavorite() }) {
-                Icon(tint = ColorApp.favorite, painter = painterResource(id = if(isFavorite)  R.drawable.ic_favorite else  R.drawable.ic_unfavorite), contentDescription = null)
-            }
-        }
+
     }
 }
 

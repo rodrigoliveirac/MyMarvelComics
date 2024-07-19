@@ -78,9 +78,17 @@ fun ComicDetailsScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                modifier = Modifier.clip(RoundedCornerShape(bottomEnd = 32.dp, bottomStart = 24.dp)),
+                modifier = Modifier.clip(
+                    RoundedCornerShape(
+                        bottomEnd = 32.dp,
+                        bottomStart = 24.dp
+                    )
+                ),
                 title = {
-                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         IconButton(onClick = navigateUp) {
                             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                         }
@@ -128,13 +136,18 @@ fun ComicDetailsScreen(
             LazyRowPaging(
                 modifier = Modifier, characters
             ) { character ->
-                CardContent(
-                    hideHeart = true,
-                    id = character.id,
-                    isFavorite = false,
-                    title = character.name ?: "",
-                    img = character.thumbnail,
-                    toDetails = { })
+                character?.let {
+                    CardContent(
+                        hideHeart = true,
+                        id = character.id,
+                        isFavorite = false,
+                        title = character.name ?: "",
+                        img = character.thumbnail,
+                        toDetails = { })
+                } ?: run {
+                    characters.retry()
+                }
+
             }
         }
 
@@ -169,9 +182,11 @@ fun ComicDetailsScreen(
                     text = uiState.askFirst
                 )
 
-                Row(modifier = Modifier
-                    .weight(1f)
-                    .padding(16.dp),verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp), verticalAlignment = Alignment.CenterVertically
+                ) {
                     Button(
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(

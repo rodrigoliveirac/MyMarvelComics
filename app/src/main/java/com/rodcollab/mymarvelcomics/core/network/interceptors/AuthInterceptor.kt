@@ -10,8 +10,8 @@ class AuthInterceptor(private val timestamp: String, private val apiKey: String,
         val originalRequest = chain.request()
         val url = originalRequest.url
             .newBuilder()
-            .addQueryParameter("ts", timestamp)
             .addQueryParameter("apikey", apiKey)
+            .addQueryParameter("ts", timestamp)
             .addQueryParameter("hash", hash)
             .build()
 

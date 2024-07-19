@@ -11,8 +11,35 @@ import androidx.navigation.navArgument
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.rodcollab.mymarvelcomics.core.ui.navigation.MMCDestinations
 import com.rodcollab.mymarvelcomics.core.ui.navigation.MMCDestinationsArgs
+import com.rodcollab.mymarvelcomics.core.ui.navigation.MMCScreens
 
 fun NavGraphBuilder.comics(navController: NavController) {
+
+    composable(route = MMCDestinations.COMICS_ROUTE) {
+        val viewModel = hiltViewModel<ComicsViewModel>()
+        val comics = viewModel.allComics.collectAsLazyPagingItems()
+        val dropDownMenu by viewModel.dropDownMenu.collectAsState()
+        val favorites by viewModel.favorites.collectAsState()
+        ComicsScreen(
+            dropDownExpanded = dropDownMenu.expanded,
+            expandedDropdownMenu = {
+             viewModel.expandedDropdownMenu()
+            },
+            uiOptions = dropDownMenu,
+            toFilter = {
+                viewModel.switchSession(it)
+            },
+            toCharacters = { route ->
+                navController.navigate(route)
+            },
+            favorites = favorites.model ?: emptyList(),
+            comics = comics,
+            onRefresh = {
+                viewModel.refresh()
+            }) { comicId ->
+            navController.navigate("${MMCScreens.COMIC_DETAILS_SCREEN}/$comicId")
+        }
+    }
 
     composable(
         route = MMCDestinations.COMIC_DETAILS_ROUTE,

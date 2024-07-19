@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,10 +40,11 @@ import com.rodcollab.mymarvelcomics.core.ui.components.LazyRowPaging
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailsScreen(
+    onRefresh: () -> Unit,
     uiState: UiState<CharacterExternal>,
     comics: LazyPagingItems<Comic>,
     toComic: (Int) -> Unit,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
 ) {
 
 
@@ -59,13 +61,23 @@ fun CharacterDetailsScreen(
         }
     }
 
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            onRefresh()
+        }
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                modifier  =  Modifier.clip(
-                    RoundedCornerShape(bottomEnd = 32.dp, bottomStart = 24.dp)),
+                modifier = Modifier.clip(
+                    RoundedCornerShape(bottomEnd = 32.dp, bottomStart = 24.dp)
+                ),
                 title = {
-                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         IconButton(onClick = navigateUp) {
                             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                         }
@@ -91,7 +103,7 @@ fun CharacterDetailsScreen(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start= 16.dp, top = 24.dp, bottom = 16.dp, end = 16.dp)
+                    .padding(start = 16.dp, top = 24.dp, bottom = 16.dp, end = 16.dp)
                     .size(width = 240.dp, height = 180.dp)
             ) {
                 CardContent(
@@ -112,15 +124,20 @@ fun CharacterDetailsScreen(
             LazyRowPaging(
                 modifier = Modifier, comics
             ) { comic ->
-                CardContent(
-                    hideHeart = true,
-                    isFavorite = comic.isFavorite,
-                    id = comic.id,
-                    title = comic.title ?: "",
-                    img = comic.urlImage,
-                    toDetails = { comicId ->
-                        toComic(comicId)
-                    })
+                comic?.let {
+                    CardContent(
+                        hideHeart = !comic.isFavorite,
+                        isFavorite = comic.isFavorite,
+                        id = comic.id,
+                        title = comic.title ?: "",
+                        img = comic.urlImage,
+                        toDetails = { comicId ->
+                            toComic(comicId)
+                        })
+                } ?: run {
+                    comics.retry()
+                }
+
             }
         }
 

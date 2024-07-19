@@ -6,6 +6,5 @@ data class CharacterNetwork(
     val name: String,
     val description: String?,
     val thumbnail: Image?,
-    val comics: ResourceList?,
     val resourceURI: String
 )

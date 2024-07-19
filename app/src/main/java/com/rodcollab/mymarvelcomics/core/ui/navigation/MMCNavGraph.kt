@@ -16,7 +16,7 @@ import com.rodcollab.mymarvelcomics.features.comics.comics
 fun MMCNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MMCDestinations.CHARACTERS_ROUTE,
+    startDestination: String = MMCDestinations.COMICS_ROUTE,
 ) {
     Scaffold { paddingValues ->
 

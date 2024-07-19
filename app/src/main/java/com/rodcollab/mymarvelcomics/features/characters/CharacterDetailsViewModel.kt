@@ -49,9 +49,7 @@ class CharacterDetailsViewModel @Inject constructor(
     }
 
     fun refresh() {
-        viewModelScope.launch {
-            comicsPaging = domain.comics(characterId).cachedIn(viewModelScope)
-        }
+        comicsPaging = domain.comics(characterId).cachedIn(viewModelScope)
     }
 
 }

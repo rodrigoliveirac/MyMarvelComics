@@ -12,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -37,6 +38,9 @@ object RetrofitModule {
     @Singleton
     fun provideOkHttpClient(authInterceptor: AuthInterceptor, userAgentInterceptor: UserAgentInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60,TimeUnit.SECONDS)
             .addInterceptor(authInterceptor)
             .addInterceptor(userAgentInterceptor)
             .build()

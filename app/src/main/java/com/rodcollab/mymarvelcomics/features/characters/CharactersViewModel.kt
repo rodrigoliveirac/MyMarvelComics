@@ -11,10 +11,11 @@ import javax.inject.Inject
 class CharactersViewModel @Inject constructor(private val domain: CharacterDomain) :
     ViewModel() {
 
-    var data = domain.characters().cachedIn(viewModelScope)
-    fun refresh() {
-        data =  domain.characters().cachedIn(viewModelScope)
+    private var _data = domain.characters().cachedIn(viewModelScope)
+    val data = _data
 
+    fun refresh() {
+        _data = domain.characters().cachedIn(viewModelScope)
     }
 
 
