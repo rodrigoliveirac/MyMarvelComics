@@ -55,6 +55,7 @@ O sistema de favoritação foi pensado para que os usuários possam armazenar os
 <img src="https://developer.android.com/static/codelabs/basic-android-kotlin-compose-persisting-data-room/img/8b91b8bbd7256a63_1920.png?hl=pt-br">
 
 # Estrutura do projeto
+```        
 ├── Core
 │   ├── Domain
 │   ├── Data (repositories)
@@ -65,10 +66,7 @@ O sistema de favoritação foi pensado para que os usuários possam armazenar os
 ├── Features
 │   ├── Characters (contendo as screens e estrutura de navegação)
 │   ├── Comics (contendo as screens e estrutura de navegação)
-</code>
-    </pre>
-</body>
-
+```
 # Core
 
 Contém os componentes centrais utilizados em todo o aplicativo.
