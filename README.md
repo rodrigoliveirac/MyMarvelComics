@@ -1,6 +1,28 @@
-# MyMarvelComics App 
+# MyMarvelComics App
 Esse aplicativo foi feito para te ajudar a salvar seus quadrinhos favoritos! :)
 
+## Sumário
+- [Arquitetura](#arquitetura)
+- [System design](#system-design)
+    - [Paginação](#paginação)
+        - [Arquitetura e componentes](#arquitetura-e-componentes)
+        - [CharactersRemoteMediator](#charactersremotemediator)
+    - [Favoritos](#favoritos)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Core](#core)
+- [Domain](#domain)
+    - [Exemplo](#exemplo)
+- [Design Patterns](#design-patterns)
+    - [Princípio da inversão de dependência](#princípio-da-inversão-de-dependência)
+    - [Command Pattern](#command-pattern)
+- [Sobre componetização](#sobre-componetização)
+    - [Como utilizar o LazyVerticalGridPaging?](#como-utilizar-o-lazyverticalgridpaging) 
+- [Links](#links)
+- [Screenshots](#screenshots)
+- [Funcionalidades](#funcionalidades)
+- [Build](#build)
+- [Tecnologias Utilizadas](#tecnologias)
+- [Outros tópicos para escrever sobre](#outros-tópicos-para-escrever-sobre)
 ## Arquitetura
 **MyMarvelComicsApp** é baseado na arquitetura MVVM e o Repository pattern, seguindo [Guia de arquitetura docuemntada pelo google](https://developer.android.com/topic/)
 Além disso, também incluo Clean Architecture.
@@ -8,78 +30,31 @@ Além disso, também incluo Clean Architecture.
 <img width="960" alt="Canva Design" src="https://github.com/user-attachments/assets/509d5dff-d49c-4dad-ae70-e73026dab3f3">
 
 
-# SYTEM DESIGN 
+# System design 
 
-  - ## Paginação:
+## Paginação
 
-  <img src="https://developer.android.com/static/topic/libraries/architecture/images/paging3-layered-architecture.svg?hl=pt-br">
+### Arquitetura e Componentes:
 
-Vale notar que na imagem acima não está fazendo alusão a uma camada de UseCases a qual estou usando nesse projeto. Faço o uso de use cases justamente para encapsular as regras de negcócio da aplicação.
-Além disso, não faço o uso do PagingDataAdapter, o qual é usado em RecyclerViews. Apenas recebo da ViewModel um PagingData e faço o consumo utilizando uma @Composable
+ - RemoteMediator: Interface fornecida pelo Paging do android para lidar com a intermediação entre a origem de dados remota e o cache local.
+ - charactersDao: DAO (Data Access Object) para acessar e manipular o banco de dados local.
+ - remoteService: Serviço para fazer requisições à API remota.
+ - transactionProvider: Fornece uma maneira de executar transações no banco de dados, garantindo a integridade dos dados e evita a dependência do Appdabase.
 
-## 1. Objetivo do CharactersRemoteMediator
+### CharactersRemoteMediator
 
-O CharactersRemoteMediator é uma classe que faz parte da implementação de paginação de dados usando o componente Paging 3 do Android Jetpack. O propósito dessa classe é gerenciar a carga e a atualização dos dados do model vindo retornados pelo Web Server da Marvel, e armazená-los localmente no nosso AppDatabase. Ela lida com a lógica de paginação e cache para fornecer uma experiência de rolagem suave e eficiente para o usuário.
+O CharactersRemoteMediator é uma classe que faz parte da implementação de paginação de dados usando o componente Paging 3 do Android Jetpack. O propósito dessa classe é gerenciar a carga e a atualização dos dados mais recentes do Web Server, e armazená-los localmente no nosso AppDatabasee. Ela lida com a lógica de paginação de 15 itens por vez a cada momento que o último foi alcançado. O uso do cache é importante para fornecer uma experiência de rolagem suave e eficiente para o usuário - além  um código limpo e manutenível. Além diss,o Lida com diferentes tipos de erros de forma robusta, fornecendo feedback apropriado. 
 
-## 2. Arquitetura e Componentes
+## Favoritos
 
-Componentes Principais:
-RemoteMediator: Interface fornecida pelo Paging do android para lidar com a intermediação entre a origem de dados remota e o cache local.
-charactersDao: DAO (Data Access Object) para acessar e manipular o banco de dados local.
-remoteService: Serviço para fazer requisições à API remota.
-transactionProvider: Fornece uma maneira de executar transações no banco de dados, garantindo a integridade dos dados.
-
-## 3. Fluxo de Dados
-
-Inicialização (initialize)
-
-Quando o RemoteMediator é inicializado, ele retorna a ação LAUNCH_INITIAL_REFRESH, indicando que uma atualização inicial dos dados deve ser realizada.
-Carregamento de Dados (load)
-
-LoadType: A função load é chamada com um tipo de carregamento que pode ser REFRESH, PREPEND, ou APPEND.
-
-LoadType.REFRESH: Limpa o cache local e carrega dados novos. Define currentPage como o valor inicial.
-LoadType.PREPEND: Não faz nada e retorna endOfPaginationReached = true, indicando que não há mais dados a serem carregados antes do início.
-LoadType.APPEND: Adiciona novos dados à lista existente, incrementando a currentPage e ajustando a chave de carregamento.
-Requisição à API:
-
-Se comicId for fornecido, faz uma requisição específica para obter personagens de uma HQ específica. (esse caso, uso para reutilizar esse Remoto Mediator para paginação uma lista de personagens, por exemplo, por meio de um comicId. O mesmo faço o ComicsRemoteMediator). Caso contrário, faz uma requisição geral para obter todos os personagens.
-
-## Transformação e Armazenamento:
-
-Converte os dados da resposta da API em entidades CharacterEntity.
-Usa o transactionProvider para executar uma transação que, dependendo do LoadType, limpa o banco de dados local e insere os novos dados.
-
-## Resultado da Mediação:
-
-Retorna MediatorResult.Success se os dados foram carregados com sucesso, indicando se todos os dados foram carregados (endOfPaginationReached).
-Retorna MediatorResult.Error em caso de falhas (IOException, HttpException, ou outros erros).
-
-## 4. Benefícios e Justificativas:
-
-- ### Paginação Eficiente: Utiliza a abordagem de paginação para carregar dados de forma incremental, o que melhora o desempenho e a experiência do usuário.
-- ### Atualização e Sincronização: Garante que o banco de dados local esteja sincronizado com os dados mais recentes da API.
-- ### Tratamento de Erros: Lida com diferentes tipos de erros de forma robusta, fornecendo feedback apropriado.
-
-## 5. Em resumo:
-
-O CharactersRemoteMediator é uma solução eficiente para gerenciar dados paginados em um aplicativo Android, proporcionando uma maneira limpa e robusta de integrar dados remotos com o cache local. A implementação segue as melhores práticas para garantir uma experiência de usuário responsiva e um código limpo e manutenível.
-
-  - ## Favoritos
-
-    ### O sistema de favoritação foi pensado para que os usuários possam armazenar os HQs em disco local.
-
-    - Na imagem abaixo, apresentamos uma visão geral do design do MyComicsApp. Anteriormente, ao discutir o sistema de paginação, mencionamos o DAO (Data Access Object). O DAO é uma interface responsável por abstrair as implementações de consultas em SQL, facilitando o acesso e a manipulação dos dados.
+O sistema de favoritação foi pensado para que os usuários possam armazenar os HQs em disco local. Na imagem abaixo, apresentamos uma visão geral do design do MyComicsApp. Anteriormente, ao discutir o sistema de paginação, mencionamos o DAO (Data Access Object). O DAO é uma interface responsável por abstrair as implementações de consultas em SQL, facilitando o acesso e a manipulação dos dados.
    
                                                     UI LAYER      DOMAIN LAYER          DATA LAYER            
              Em resumo: INTERAÇÃO DO USUÁRIO -> VIEW -> VIEWMODEL -> USECASE -> REPOSITORY -> DAO -> DATABASE  
 
 <img src="https://developer.android.com/static/codelabs/basic-android-kotlin-compose-persisting-data-room/img/8b91b8bbd7256a63_1920.png?hl=pt-br">
 
-<body>
-    <h1>Estrutura do projeto</h1>
-    <pre>
-<code>
+# Estrutura do projeto
 ├── Core
 │   ├── Domain
 │   ├── Data (repositories)
@@ -94,15 +69,16 @@ O CharactersRemoteMediator é uma solução eficiente para gerenciar dados pagin
     </pre>
 </body>
 
-# CORE
-  - ### Contém os componentes centrais que são utilizados em todo o aplicativo.
+# Core
+
+Contém os componentes centrais utilizados em todo o aplicativo.
   
-  ------------
 # Domain
-Contém as classes de domínio responsáveis para que lidar com as regras de negócio do aplicativo. 
-O ideal é deixar esse componente o mais isolado possível de frameworks externos. Desse modo, fica mais fácil de testar e escalar.
-- ## Exemplo: 
-A AddOrRemoveFromFavoritesImpl é responsável por verificar se o Comic marcado é favorito ou não para a partir disso decidir se vai adicionar ou deletar os item na table FAVORITES.
+
+Contém as classes de domínio responsáveis para lidar com as regras de negócio do aplicativo. O ideal é deixar esse componente o mais isolado possível de frameworks externos. Desse modo, fica mais fácil de testar e escalar.
+
+## Exemplo: 
+A AddOrRemoveFromFavoritesImpl é responsável por verificar se o Comic marcado é favorito ou não para, a partir disso, decidir se vai adicionar ou deletar os item na tabela de favoritos - do nosso Appdatabase.
 Nesse exemplo, nós podemos identificar 2 patterns importantes em desenvolvimento de sistemas: princípio da inversão de dependência e command pattern.
      
 ```
@@ -123,18 +99,24 @@ class AddOrRemoveFromFavoritesImpl(
 }
 ```
 
-# O que seria um Command Pattern?
-Padrão de design comportamental que encapsula uma solicitação como um objeto, permitindo que você parametrize métodos com diferentes solicitações, enfileire ou registre solicitações e suporte operações que podem ser desfeitas..
-Nesse contexto, a interface AddOrRemoveFromFavorites define a operação de adicionar/remover favoritos. A implementação decide a ação com base no estado do `comic` e chama métodos no ComicsRepository (o Receiver). Já o client, nosso ComicDetailsViewModel pode atuar usando o Invoker que dispara a execução da operação.
+# Design Patterns
 
-- ## Benefícios: Permite adicionar novas operações sem modificar o código existente.
-    
-- ## COMO ASSIM?
+- Atenção: para entender o contexto, você precisar ler o tópico anterior.
 
- ### Vamos para outro contexto.
-  - Anterioramente, O ComicsUseCase estava responsável apenas para chamar o fluxo de dados da paginação vindo da camada de dados. Os dados da paginação vêm puros do servidor (sem saber se é um comic favoritado ou não). Caso queiramos retornar uma lista de favoritos para mostrar itens misturados para o usuário (e com algum componente de visualizão, claro), basta nós acrescentarmos mais lógica dentro da implementação. Resultado: o retorno do contrato não muda ainda, apenas a implementação. Isso é muito flexível e fácil de escalar.
-    
-    - ## OK, "Cadê o código?"
+## O princípio da inversão de dependência
+
+Esse princípio afirma que módulos de alto nível não devem depender de módulos de baixo nível. Ambos devem depender de abstrações - e abstrações não devem depender de detalhes. E estes devem depender de abstrações.
+Em outras palavras, o princípio sugere que tanto as classes de alto nível (que contém a lógica de negócios mais importante) e as classes de baixo nível (que realizam tarefas mais específicas) devem depender de interfaces ou abstrações em vez de depender diretamente umas das outras. Nesse contexto, por exemplo, o AddOrRemoveFromFavoritesImpl depende de uma interface ComicsRepository que, por sua vez, depende de outra abstração ao invés de um objeto concreto. Com essa prática, o design do seu código se torna mais modular.
+
+## Command Pattern
+
+Padrão de design comportamental que encapsula uma solicitação como um objeto, permitindo que você parametrize métodos com diferentes solicitações, enfileire ou registre solicitações e suporte operações que podem ser desfeitas. Nesse contexto, a interface AddOrRemoveFromFavorites define a operação de adicionar/remover favoritos. A implementação decide a ação com base no estado do `comic` e chama métodos no ComicsRepository (o Receiver). Já o cliente, nosso ComicDetailsViewModel, pode atuar usando o Invoker que dispara a execução da operação.
+
+### Benefícios: Permite adicionar novas operações sem modificar o código existente.    
+
+#### Exemplo:
+
+Anterioramente, O ComicsUseCase estava responsável apenas para chamar o fluxo de dados da paginação vindo da camada de dados. Os dados da paginação vêm puros do servidor (sem saber se é um comic favoritado ou não). Caso queiramos retornar uma lista de favoritos para mostrar itens misturados para o usuário (e com algum componente de visualizão, claro), basta nós acrescentarmos mais lógica dentro da implementação. Resultado: o retorno do contrato não muda ainda, apenas a implementação. Isso é muito flexível e fácil de escalar. 
  
  ```
 class ComicsUseCaseImpl (private val comicsRepository: ComicsRepository):
@@ -184,10 +166,10 @@ class ComicsUseCaseImpl (private val comicsRepository: ComicsRepository):
 
 Ao longo do codebase você vai perceber o quanto fica fácil seguir esse design. Até mesmo para, caso ncessário, componentizar essas classes utilizando generics do kotlin.
 
-# SOBRE COMPONENTIZAÇÃO
+# Sobre componetização
 É muito comum ao longo do densenvolvimento de um software haver a necessidade de reutilizar abstrações.
-Nesse projeto tem uma que gostei bastante, pois a criei pensando justamente para reutilizar na criação de telas semelhantes, uma prática muito comum para não somente ecomizarmos tempo, mas para tertarmos.
-No arquito PagingComponents.kt você vai encontrar alguns exemplos de componentes que criei para reutilizar, como cards e listas.
+Nesse projeto tem uma que gostei bastante, pois a criei pensando justamente para reutilizar na criação de telas semelhantes, uma prática muito comum para não somente economizarmos tempo, mas para testarmos.
+No arquivo PagingComponents.kt você vai encontrar alguns exemplos de componentes que criei para reutilizar, como cards e listas.
 E esse é meu favorito :
 ```        
 @Composable
@@ -226,7 +208,7 @@ internal fun <T : Any> LazyVerticalGridPaging(
 ```
 Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de dado, e é assim que faço para renderizar tanto a página de Comics quanto a de Characters
 
-  ## Como utilizar? 
+  ## Como utilizar o LazyVerticalGridPaging? 
      
     // aqui basta chamar a composable. No escopo que ela retorna você pode incluir qualquer tipo de composable. Você também pode usar o componente de Card criado e passar os parâmetros que nele contém
     // no contexto pra essa aplicação, os principais forão 
@@ -239,20 +221,11 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
          }
      }
 
-## Data: Repositórios responsáveis por buscar e armazenar dados.
-## Database: Data Access Objects (DAOs) e entidades do banco de dados.
-## UI: Componentes de interface do usuário comuns.
-## Network: Configurações e chamadas de rede.
-## Features: Contém as funcionalidades específicas do aplicativo.
-## Characters: Contém as telas e a estrutura de navegação relacionadas aos personagens.
-## Comics: Contém as telas e a estrutura de navegação relacionadas às HQs.
-## O dagger-hilt é um facilitador para conteinização da applicação, ficando responsável por injetar e inicializar nossos componentes conforme nossos critérios.
+# Links
+ - [Banco de dados local no android](https://developer.android.com/training/data-storage/room?hl=pt-br)
+ - [RemoteMediators](https://developer.android.com/topic/libraries/architecture/paging/v3-network-db?hl=pt-br)
 
-# LINKS DE CONTEÚDOS RELACIONADOS:
- [Banco de dados local no android](https://developer.android.com/training/data-storage/room?hl=pt-br)
- [RemoteMediators](https://developer.android.com/topic/libraries/architecture/paging/v3-network-db?hl=pt-br)
-
- ## Screenshots📱
+# Screenshots📱
 
 | Listagem de HQ's                             | Detalhes de HQ                            | Carregando mais HQs               |
 |----------------------------------------------|-------------------------------------------|-------------------------------------|
@@ -267,7 +240,7 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
 | <img src="https://github.com/user-attachments/assets/43cfc35c-79d3-4891-a998-90937f55b9c7" alt="Alt text" style="width: 188px; height: 412px;"> | <img src="https://github.com/user-attachments/assets/d4070244-1ec4-4146-a290-7f74a94c9e79" alt="Alt text" style="width: 188px; height: 412px;">| <img src="https://github.com/user-attachments/assets/ebcb83dc-c113-457e-aae5-ed1d5ab7f46b" alt="Alt text" style="width: 188px; height: 412px;">|
 
 
-## Funcionalidades 🔬
+# Funcionalidades 🔬
 
 -  Listagem de todos os personagens da marvel.
 > 
@@ -279,7 +252,7 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
 >
 -  Listagem de Personagens por HQ selecionado.
 
-## :hammer: O que precisa para dar build na applicação?
+# Build
 
 - [Registre uma chave](https://developer.marvel.com/)
 - Você deve adicionar `PUBLIC_API_KEY` e a `PRIVATE_API_KEY` em seu `local.properties` para dar build na app, assim:
@@ -289,8 +262,9 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
     PRIVATE_API_KEY=PRIVATE_API_KEY
     ```
 
-## Summary Technologies 🛠️
-This Project is created with:
+# Tecnologias 🛠️
+
+Esse projeto utiliza:
 * *Interceptors*
 * *Robolectric*
 * *MockWebserver*
@@ -309,3 +283,14 @@ This Project is created with:
 * *Kotlin*
 * *OkhttpClient*
 * *Pagging*
+
+# Outros tópicos para escrever sobre
+
+## Data: Repositórios responsáveis por buscar e armazenar dados.
+## Database: Data Access Objects (DAOs) e entidades do banco de dados.
+## UI: Componentes de interface do usuário comuns.
+## Network: Configurações e chamadas de rede.
+## Features: Contém as funcionalidades específicas do aplicativo.
+## Characters: Contém as telas e a estrutura de navegação relacionadas aos personagens.
+## Comics: Contém as telas e a estrutura de navegação relacionadas às HQs.
+## O dagger-hilt é um facilitador para conteinerização da aplicação, ficando responsável por injetar e inicializar nossos componentes conforme nossos critérios.
