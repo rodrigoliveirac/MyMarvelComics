@@ -1,7 +1,7 @@
 # MyMarvelComics App 
 Esse aplicativo foi feito para te ajudar a salvar seus quadrinhos favoritos! :)
 
-## Architecture
+## Arquitetura
 **MyMarvelComicsApp** é baseado na arquitetura MVVM e o Repository pattern, seguindo [Guia de arquitetura docuemntada pelo google](https://developer.android.com/topic/)
 Além disso, também incluo Clean Architecture.
 
