@@ -2,7 +2,7 @@
 Esse aplicativo foi feito para te ajudar a salvar seus quadrinhos favoritos! :)
 
 ## Architecture
-**MyMarvelComicsApp** é baseado na arquitetura MVVM e o Repository pattern, seuingo  [Guia de arquitetura docuemntada pelo google](https://developer.android.com/topic/
+**MyMarvelComicsApp** é baseado na arquitetura MVVM e o Repository pattern, seguindo [Guia de arquitetura docuemntada pelo google](https://developer.android.com/topic/)
 Além disso, também incluo Clean Architecture.
 
 <img width="960" alt="Canva Design" src="https://github.com/user-attachments/assets/509d5dff-d49c-4dad-ae70-e73026dab3f3">
