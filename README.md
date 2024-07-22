@@ -209,7 +209,7 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
   ## Como utilizar o LazyVerticalGridPaging? 
      
     // aqui basta chamar a composable. No escopo que ela retorna você pode incluir qualquer tipo de composable. Você também pode usar o componente de Card criado e passar os parâmetros que nele contém
-    // no contexto pra essa aplicação, os principais forão 
+    // no contexto pra essa aplicação, os principais foram:
       - isFavorite
       - titulo
       - url da image 
