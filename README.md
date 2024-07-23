@@ -13,15 +13,16 @@ Esse aplicativo foi feito para te ajudar a salvar seus quadrinhos favoritos! :)
 - [Domain](#domain)
     - [Exemplo](#exemplo)
 - [Design Patterns](#design-patterns)
-    - [Princípio da inversão de dependência](#princípio-da-inversão-de-dependência)
+    - [Princípio da inversão de dependência](#o-princípio-da-inversão-de-dependência)
     - [Command Pattern](#command-pattern)
 - [Sobre componetização](#sobre-componetização)
-    - [Como utilizar o LazyVerticalGridPaging?](#como-utilizar-o-lazyverticalgridpaging) 
+    - [Como utilizar o LazyVerticalGridPaging?](#como-utilizar-o-lazyverticalgridpaging)
+- [Sobre o NetworkSecurityConfig.xml](#network-security-config)      
 - [Links](#links)
 - [Screenshots](#screenshots)
 - [Funcionalidades](#funcionalidades)
 - [Build](#build)
-- [Tecnologias Utilizadas](#tecnologias)
+- [Tecnologias](#tecnologias)
 - [Outros tópicos para escrever sobre](#outros-tópicos-para-escrever-sobre)
 ## Arquitetura
 **MyMarvelComicsApp** é baseado na arquitetura MVVM e o Repository pattern, seguindo [Guia de arquitetura docuemntada pelo google](https://developer.android.com/topic/)
@@ -166,7 +167,7 @@ Ao longo do codebase você vai perceber o quanto fica fácil seguir esse design.
 
 # Sobre componetização
 É muito comum ao longo do densenvolvimento de um software haver a necessidade de reutilizar abstrações.
-Nesse projeto tem uma que gostei bastante, pois a criei pensando justamente para reutilizar na criação de telas semelhantes, uma prática muito comum para não somente economizarmos tempo, mas para testarmos.
+Nesse projeto tem uma que gostei bastante, pois a criei para reutilizar na criação de telas semelhantes, uma prática muito comum para não somente economizarmos tempo, mas para testarmos.
 No arquivo PagingComponents.kt você vai encontrar alguns exemplos de componentes que criei para reutilizar, como cards e listas.
 E esse é meu favorito :
 ```        
@@ -218,6 +219,10 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
            CardContent(isFavorite, title, url)
          }
      }
+# Network Security Config
+
+> A partir do Android 9 (API level 28), o suporte a texto não criptografado é desativado por padrão. [documentação](https://developer.android.com/privacy-and-security/risks/cleartext)
+Portanto, quaisquer endereços HTTP não serão lidos a partir dessa versão. A criação do arquivo NetworkSecurityConfig.xml é uma prática recomendada, pois, em vez de atribuirmos cleartextTrafficPermitted=true no nosso AndroidManifest - o que permitiria a leitura de quaisquer endereços HTTP - podemos selecionar quais endereços não criptografados gostaríamos que o nosso app tivesse permissão para ler. Dessa forma, temos mais controle sobre os links não criptografados lidos pela nossa aplicação e, portanto, mais segurança.
 
 # Links
  - [Banco de dados local no android](https://developer.android.com/training/data-storage/room?hl=pt-br)
@@ -238,7 +243,7 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
 | <img src="https://github.com/user-attachments/assets/43cfc35c-79d3-4891-a998-90937f55b9c7" alt="Alt text" style="width: 188px; height: 412px;"> | <img src="https://github.com/user-attachments/assets/d4070244-1ec4-4146-a290-7f74a94c9e79" alt="Alt text" style="width: 188px; height: 412px;">| <img src="https://github.com/user-attachments/assets/ebcb83dc-c113-457e-aae5-ed1d5ab7f46b" alt="Alt text" style="width: 188px; height: 412px;">|
 
 
-# Funcionalidades 🔬
+# Funcionalidades
 
 -  Listagem de todos os personagens da marvel.
 > 
@@ -260,7 +265,7 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
     PRIVATE_API_KEY=PRIVATE_API_KEY
     ```
 
-# Tecnologias 🛠️
+# Tecnologias
 
 Esse projeto utiliza:
 * *Interceptors*
