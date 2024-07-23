@@ -222,7 +222,8 @@ Com o recurso de Generics do kotlin fica fácil de usar para qualquer tipo de da
 # Network Security Config
 
 > A partir do Android 9 (API level 28), o suporte a texto não criptografado é desativado por padrão. [documentação](https://developer.android.com/privacy-and-security/risks/cleartext)
-Portanto, quaisquer endereços HTTP não serão lidos a partir dessa versão. A criação do arquivo NetworkSecurityConfig.xml é uma prática recomendada, pois, em vez de atribuirmos cleartextTrafficPermitted=true no nosso AndroidManifest - o que permitiria a leitura de quaisquer endereços HTTP - podemos selecionar quais endereços não criptografados gostaríamos que o nosso app tivesse permissão para ler. Dessa forma, temos mais controle sobre os links não criptografados lidos pela nossa aplicação e, portanto, mais segurança.
+ 
+Portanto, quaisquer endereços HTTP não serão lidos a partir dessa versão. A criação do arquivo NetworkSecurityConfig.xml é uma prática recomendada, pois, em vez de atribuirmos `cleartextTrafficPermitted=true` no nosso AndroidManifest.xml - o que permitiria a leitura de quaisquer endereços HTTP - podemos selecionar quais endereços não criptografados gostaríamos que o nosso app tivesse permissão para ler. Dessa forma, temos mais controle sobre os links não criptografados lidos pela nossa aplicação e, portanto, mais segurança.
 
 # Links
  - [Banco de dados local no android](https://developer.android.com/training/data-storage/room?hl=pt-br)
