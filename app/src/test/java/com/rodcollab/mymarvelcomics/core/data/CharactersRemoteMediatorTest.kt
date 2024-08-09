@@ -91,8 +91,6 @@ class CharactersRemoteMediatorTest  {
 
     @Test
     fun refreshLoadSuccessAndEndOfPaginationWhenNoMoreData() = runTest {
-        // To test endOfPaginationReached, don't set up the mockApi to return post
-        // data here.
 
         val remoteMediator = CharactersRemoteMediator(
             comicId = null,
@@ -113,7 +111,6 @@ class CharactersRemoteMediatorTest  {
 
     @Test
     fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runTest {
-        // Set up failure message to throw exception from the mock API.
         service.failureMsg = "Throw test failure"
         val remoteMediator = CharactersRemoteMediator(
             comicId = null,

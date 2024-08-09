@@ -4,20 +4,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.rodcollab.mymarvelcomics.core.data.model.toEntity
 import com.rodcollab.mymarvelcomics.core.database.TransactionProvider
 import com.rodcollab.mymarvelcomics.core.database.dao.ComicsDao
-import com.rodcollab.mymarvelcomics.core.database.model.CharacterEntity
 import com.rodcollab.mymarvelcomics.core.database.model.ComicEntity
-import com.rodcollab.mymarvelcomics.core.network.ResponseError
-import com.rodcollab.mymarvelcomics.core.network.model.ComicNetwork
-import com.rodcollab.mymarvelcomics.core.network.model.ContentSummary
 import com.rodcollab.mymarvelcomics.core.network.service.MarvelApi
-import com.rodcollab.mymarvelcomics.core.network.service.lastPath
-import okhttp3.CacheControl
-import okhttp3.Interceptor
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)

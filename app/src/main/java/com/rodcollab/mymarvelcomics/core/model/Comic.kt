@@ -1,8 +1,5 @@
 package com.rodcollab.mymarvelcomics.core.model
 
-import com.rodcollab.mymarvelcomics.core.network.model.ContentSummary
-import com.rodcollab.mymarvelcomics.core.network.model.Image
-import com.rodcollab.mymarvelcomics.core.network.model.ResourceList
 import com.rodcollab.mymarvelcomics.core.network.model.Thumbnail
 
 data class Comic(
